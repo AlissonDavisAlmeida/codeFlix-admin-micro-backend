@@ -4,7 +4,7 @@
   "description": "admin do catalogo de videos",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watchAll",
     "ts-node": "ts-node",
     "tsc": "tsc"
   },
