@@ -1,5 +1,6 @@
-import { Category } from "./category";
-
+import { Category, CategoryState } from "./category";
+import { omit } from "lodash"
+import { v4, validate } from "uuid";
 
 describe("Category unit test", () => {
 
@@ -13,27 +14,104 @@ describe("Category unit test", () => {
         const category = new Category(state);
 
         expect(category).toBeTruthy();
-        expect(category.getProps()).toStrictEqual({
+
+        let props = omit(category.getProps(), ["createdAt"]);
+
+        expect(props).toStrictEqual({
             name: "Test",
             description: "Test",
             isActive: true,
         })
-        expect(category.id).toBe(0);
+        expect(category.id).toBeDefined();
         expect(category.createdAt).toBeInstanceOf(Date);
 
     });
 
-    it("Should be created a new Category with default values", () => {
+    it("should be created a new Category with default values", () => {
         const category = new Category({ name: "Test" });
 
         expect(category).toBeTruthy();
-        expect(category.getProps()).toStrictEqual({
+
+        let props = omit(category.getProps(), ["createdAt"]);
+
+        expect(props).toStrictEqual({
             name: "Test",
-            description: "",
+            description: null,
             isActive: true,
         })
-        expect(category.id).toBe(0);
         expect(category.createdAt).toBeInstanceOf(Date);
     })
 
+    it("getter of name field", () => {
+        const category = new Category({ name: "Test" });
+
+        expect(category.name).toBe("Test");
+    })
+
+    it("getter and setter of description field", () => {
+        let category = new Category({ name: "Test", description: "Test" });
+
+        expect(category.description).toBe("Test");
+
+        category = new Category({ name: "Test" });
+
+        expect(category.description).toBe(null);
+
+        category = new Category({ name: "Test", description: "Test", isActive: true });
+
+        category["Description"] = "Test2";
+
+        expect(category.description).toBe("Test2");
+
+        category["Description"] = null;
+
+        expect(category.description).toBeNull();
+    })
+
+    it("have id field", () => {
+
+        type CategoryData = { props: CategoryState, id?: string }
+
+        const data: CategoryData[] = [
+            { props: { name: "Test" } },
+            { props: { name: "Test", description: "Test" }, id: v4() },
+            { props: { name: "Test", description: "Test", isActive: true }, id: null },
+            { props: { name: "Test", description: "Test", isActive: true }, id: undefined },
+        ]
+
+        data.forEach(item => {
+            const category = new Category(item.props, item.id);
+
+            expect(category.id).toBeDefined();
+            expect(validate(category.id)).toBeTruthy()
+        })
+
+
+    })
+
+    it("getter and setter of isActive field", () => {
+        let category = new Category({ name: "Test", isActive: true });
+
+        expect(category.isActive).toBe(true);
+
+        category = new Category({ name: "Test" });
+
+        expect(category.isActive).toBe(true);
+
+        category = new Category({ name: "Test", isActive: false });
+
+        expect(category.isActive).toBe(false);
+    })
+
+    it("getter of createdAt field", () => {
+        let category = new Category({ name: "Test" });
+
+        expect(category.createdAt).toBeInstanceOf(Date);
+
+        const createdAt = new Date();
+
+        category = new Category({ name: "Test", createdAt });
+
+        expect(category.createdAt).toBe(createdAt);
+    })
 })

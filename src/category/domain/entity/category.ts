@@ -1,34 +1,38 @@
-interface CategoryState {
+import {v4 as uuid} from "uuid"
+
+export interface CategoryState {
+
     readonly name: string;
     readonly description?: string;
     readonly isActive?: boolean;
+    readonly createdAt?: Date;
 }
 
 export class Category {
-
-    #id: number;
+    public readonly id: string;
     #name: string;
     #description?: string;
     #createdAt: Date;
     #isActive?: boolean;
 
     constructor(
-        { name, description, isActive }: CategoryState,
+        { name, description, isActive, createdAt }: CategoryState,
+        id?: string
     ) {
 
-        this.#id = 0;
+        this.id = id ?? uuid();
         this.#name = name;
-        this.description = description;
-        this.isActive = isActive
-        this.#createdAt = new Date();
+        this.Description = description;
+        this.IsActive = isActive
+        this.#createdAt = createdAt || new Date();
     }
 
-    private set description(description: string | undefined) {
-        this.#description = description ?? "";
+    private set Description(description: string | undefined) {
+        this.#description = description ?? null;
     }
 
-    private set isActive(isActive: boolean | undefined) {
-        this.#isActive = isActive || true;
+    private set IsActive(isActive: boolean | undefined) {
+        this.#isActive = isActive === undefined ? true : isActive;
     }
 
     get name(): string {
@@ -36,17 +40,14 @@ export class Category {
     }
 
     get description(): string {
-        return this.#description ?? "";
+        return this.#description;
     }
 
     get isActive(): boolean {
         return this.#isActive!;
     }
 
-    get id(): number {
-        return this.#id;
-    }
-
+   
     get createdAt(): Date {
         return this.#createdAt;
     }
@@ -56,6 +57,7 @@ export class Category {
             name: this.#name,
             description: this.#description,
             isActive: this.#isActive,
+            createdAt: this.#createdAt,
         }
     }
 
