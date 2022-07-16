@@ -1,6 +1,6 @@
 import { Category, CategoryState } from "./category";
 import { omit } from "lodash"
-import { v4, validate } from "uuid";
+import { UniqueIdentity } from "../../../@seedwork/domain/unique_identity";
 
 describe("Category unit test", () => {
 
@@ -70,11 +70,11 @@ describe("Category unit test", () => {
 
     it("have id field", () => {
 
-        type CategoryData = { props: CategoryState, id?: string }
+        type CategoryData = { props: CategoryState, id?: UniqueIdentity }
 
         const data: CategoryData[] = [
             { props: { name: "Test" } },
-            { props: { name: "Test", description: "Test" }, id: v4() },
+            { props: { name: "Test", description: "Test" }, id: new UniqueIdentity() },
             { props: { name: "Test", description: "Test", isActive: true }, id: null },
             { props: { name: "Test", description: "Test", isActive: true }, id: undefined },
         ]
@@ -83,7 +83,7 @@ describe("Category unit test", () => {
             const category = new Category(item.props, item.id);
 
             expect(category.id).toBeDefined();
-            expect(validate(category.id)).toBeTruthy()
+            expect(category.id).toBeInstanceOf(UniqueIdentity);
         })
 
 

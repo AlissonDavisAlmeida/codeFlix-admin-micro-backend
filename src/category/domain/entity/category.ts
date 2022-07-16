@@ -1,4 +1,4 @@
-import {v4 as uuid} from "uuid"
+import { UniqueIdentity } from "../../../@seedwork/domain/unique_identity";
 
 export interface CategoryState {
 
@@ -9,7 +9,7 @@ export interface CategoryState {
 }
 
 export class Category {
-    public readonly id: string;
+    public readonly id: UniqueIdentity;
     #name: string;
     #description?: string;
     #createdAt: Date;
@@ -17,10 +17,10 @@ export class Category {
 
     constructor(
         { name, description, isActive, createdAt }: CategoryState,
-        id?: string
+        id?: UniqueIdentity
     ) {
 
-        this.id = id ?? uuid();
+        this.id = id ?? new UniqueIdentity();
         this.#name = name;
         this.Description = description;
         this.IsActive = isActive
