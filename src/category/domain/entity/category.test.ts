@@ -1,6 +1,6 @@
 import { Category, CategoryState } from "./category";
 import { omit } from "lodash"
-import { UniqueIdentity } from "../../../@seedwork/domain/unique_identity";
+import { UniqueIdentity } from "../../../@seedwork/domain/valueObjects/unique_identity";
 
 describe("Category unit test", () => {
 

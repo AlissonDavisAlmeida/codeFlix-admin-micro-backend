@@ -1,4 +1,4 @@
-import { UniqueIdentity } from "../../../@seedwork/domain/unique_identity";
+import { UniqueIdentity } from "../../../@seedwork/domain/valueObjects/unique_identity";
 
 export interface CategoryState {
 
