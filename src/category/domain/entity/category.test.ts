@@ -108,4 +108,26 @@ describe("Category unit test", () => {
 
     expect(category.createdAt).toBe(createdAt);
   });
+
+  it("should update a Category", () => {
+    const category = new Category({ name: "Test" });
+
+    const message = category.update({ name: "Test2", description: "Test2" });
+
+    expect(message).toBe("Category updated");
+    expect(category.name).toBe("Test2");
+    expect(category.description).toBe("Test2");
+  });
+
+  it("should activate a Category", () => {
+    const category = new Category({ name: "Test", isActive: false });
+
+    category.activate();
+
+    expect(category.isActive).toBe(true);
+
+    category.deactivate();
+
+    expect(category.isActive).toBe(false);
+  });
 });

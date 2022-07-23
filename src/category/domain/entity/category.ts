@@ -9,6 +9,11 @@ export interface CategoryState {
   readonly createdAt?: Date;
 }
 
+export interface UpdateCategoryProps {
+  readonly name: string;
+  readonly description: string;
+}
+
 export class Category extends BaseEntity<CategoryState> {
   #name: string;
 
@@ -64,5 +69,19 @@ export class Category extends BaseEntity<CategoryState> {
       isActive: this.#isActive,
       createdAt: this.#createdAt,
     };
+  }
+
+  update({ name, description }: UpdateCategoryProps): string {
+    this.#name = name;
+    this.#description = description;
+    return "Category updated";
+  }
+
+  activate(): void {
+    this.#isActive = true;
+  }
+
+  deactivate(): void {
+    this.#isActive = false;
   }
 }
