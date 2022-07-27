@@ -21,33 +21,47 @@ describe("ValidatorRules", () => {
     expect(() => validator.required()).not.toThrowError("Value is required");
   });
 
-  it("should validate a field as a string", () => {
-    let validator = ValidatorRules.validate(1, "fieldName");
-
-    expect(() => validator.string()).toThrowError("Value must be a string");
-
-    validator = ValidatorRules.validate("name", "fieldName");
-
-    expect(() => validator.string()).not.toThrowError("Value must be a string");
+  it.each`
+  value | typeValidator | message | params
+  ${"10"} | ${"string"} | ${"Value must be a string"} | ${undefined}
+  ${"true"} | ${"string"} | ${"Value must be a string"} | ${undefined}
+  ${"name"} | ${"string"} | ${"Value must be a string"} | ${undefined}
+  ${""} | ${"string"} | ${"Value must be a string"} | ${undefined}
+  ${"named"} | ${"minLength"} | ${"Value must be at least 5 characters long"} | ${5}
+  ${"nameField"} | ${"minLength"} | ${"Value must be at least 5 characters long"} | ${5}
+  ${"sssssss"} | ${"maxLength"} | ${"Value must be at most 10 characters long"} | ${10}
+  ${"nameField"} | ${"maxLength"} | ${"Value must be at most 10 characters long"} | ${10}
+  ${true} | ${"boolean"} | ${"Value must be a boolean"} | ${undefined}
+  ${false} | ${"boolean"} | ${"Value must be a boolean"} | ${undefined}
+  `("should validate a field as valid value", ({
+    value, typeValidator, message, params,
+  }) => {
+    const validator = ValidatorRules.validate(value, "fieldName");
+    // @ts-ignore
+    expect(() => validator[typeValidator](params || null)).not.toThrowError(message);
   });
 
-  it("should validate a field as a minimum length", () => {
-    let validator = ValidatorRules.validate("name", "fieldName");
-
-    expect(() => validator.minLength(5)).toThrowError("Value must be at least 5 characters long");
-
-    validator = ValidatorRules.validate("nameField", "fieldName");
-
-    expect(() => validator.minLength(5)).not.toThrowError("Value must be at least 5 characters long");
+  it.each`
+  value
+  ${"10"}
+  ${undefined}
+  ${null}
+  ${1}
+  ${true}
+  ${"na"}
+  ${"sssssssssssss"}
+  
+  `("should throw validation error when combine two or more validations rules", ({ value }) => {
+    const validator = ValidatorRules.validate(value, "fieldName");
+    expect(() => validator.required().string().minLength(5).maxLength(10)).toThrowError();
   });
 
-  it("should validate a field as a maximum length", () => {
-    let validator = ValidatorRules.validate("name12", "fieldName");
-
-    expect(() => validator.maxLength(5)).toThrowError("Value must be at most 5 characters long");
-
-    validator = ValidatorRules.validate("name", "fieldName");
-
-    expect(() => validator.maxLength(5)).not.toThrowError("Value must be at most 5 characters long");
+  it.each`
+    value
+    ${"10qqq"}
+    ${"undefined"}
+  `("should not throw validation error when combine two or more validations rules", ({ value }) => {
+    const validator = ValidatorRules.validate(value, "fieldName");
+    expect(() => validator.required().string().minLength(5).maxLength(10)).not.toThrowError();
   });
 });
