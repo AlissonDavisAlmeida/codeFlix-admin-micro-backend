@@ -3,6 +3,10 @@ import { Category, CategoryState } from "./category";
 import { UniqueIdentity } from "../../../@seedwork/domain/valueObjects/unique_identity";
 
 describe("Category unit test", () => {
+  beforeEach(() => {
+    Category.validate = jest.fn();
+  });
+
   it("should be created a new Category", () => {
     const state = {
       name: "Test",
@@ -21,6 +25,7 @@ describe("Category unit test", () => {
       description: "Test",
       isActive: true,
     });
+    expect(Category.validate).toHaveBeenCalledTimes(1);
     expect(category.id).toBeDefined();
     expect(category.createdAt).toBeInstanceOf(Date);
   });
@@ -32,6 +37,7 @@ describe("Category unit test", () => {
 
     const props = omit(category.getProps(), ["createdAt"]);
 
+    expect(Category.validate).toHaveBeenCalledTimes(1);
     expect(props).toStrictEqual({
       name: "Test",
       description: null,
@@ -43,6 +49,7 @@ describe("Category unit test", () => {
   it("getter of name field", () => {
     const category = new Category({ name: "Test" });
 
+    expect(Category.validate).toHaveBeenCalledTimes(1);
     expect(category.name).toBe("Test");
   });
 
@@ -64,6 +71,7 @@ describe("Category unit test", () => {
     category.description = null;
 
     expect(category.description).toBeNull();
+    expect(Category.validate).toHaveBeenCalledTimes(3);
   });
 
   it("have id field", () => {
@@ -117,6 +125,7 @@ describe("Category unit test", () => {
     expect(message).toBe("Category updated");
     expect(category.name).toBe("Test2");
     expect(category.description).toBe("Test2");
+    expect(Category.validate).toHaveBeenCalledTimes(2);
   });
 
   it("should activate a Category", () => {
@@ -129,5 +138,17 @@ describe("Category unit test", () => {
     category.deactivate();
 
     expect(category.isActive).toBe(false);
+  });
+
+  it("should deactivate a Category", () => {
+    const category = new Category({ name: "Test", isActive: true });
+
+    category.deactivate();
+
+    expect(category.isActive).toBe(false);
+
+    category.activate();
+
+    expect(category.isActive).toBe(true);
   });
 });

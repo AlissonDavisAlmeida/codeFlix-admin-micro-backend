@@ -1,3 +1,4 @@
+import { ValidatorRules } from "../../../@seedwork/validators/ValidatorRules";
 import { BaseEntity } from "../../../@seedwork/domain/entity/BaseEntity";
 import { UniqueIdentity } from "../../../@seedwork/domain/valueObjects/unique_identity";
 
@@ -12,6 +13,7 @@ export interface CategoryState {
 export interface UpdateCategoryProps {
   readonly name: string;
   readonly description: string;
+  readonly isActive?: boolean;
 }
 
 export class Category extends BaseEntity<CategoryState> {
@@ -29,6 +31,7 @@ export class Category extends BaseEntity<CategoryState> {
     }: CategoryState,
     id?: UniqueIdentity,
   ) {
+    Category.validate({ name, description, isActive });
     super({
       name, description, isActive, createdAt,
     }, id);
@@ -36,6 +39,21 @@ export class Category extends BaseEntity<CategoryState> {
     this.description = description;
     this.IsActive = isActive;
     this.#createdAt = createdAt || new Date();
+  }
+
+  update({ name, description }: UpdateCategoryProps): string {
+    Category.validate({ name, description });
+    this.#name = name;
+    this.#description = description;
+    return "Category updated";
+  }
+
+  static validate({ name, description, isActive }: Omit<CategoryState, "id" | "createdAt">) {
+    ValidatorRules.validate(name, "name").required().string();
+    ValidatorRules.validate(description, "description").string();
+    if (isActive) {
+      ValidatorRules.validate(isActive, "isActive").boolean();
+    }
   }
 
   private set IsActive(isActive: boolean | undefined) {
@@ -69,12 +87,6 @@ export class Category extends BaseEntity<CategoryState> {
       isActive: this.#isActive,
       createdAt: this.#createdAt,
     };
-  }
-
-  update({ name, description }: UpdateCategoryProps): string {
-    this.#name = name;
-    this.#description = description;
-    return "Category updated";
   }
 
   activate(): void {
