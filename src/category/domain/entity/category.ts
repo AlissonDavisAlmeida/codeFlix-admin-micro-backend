@@ -49,7 +49,12 @@ export class Category extends BaseEntity<CategoryState> {
   }
 
   static validate({ name, description, isActive }: Omit<CategoryState, "id" | "createdAt">) {
-    ValidatorRules.validate(name, "name").required().string();
+    ValidatorRules
+      .validate(name, "name")
+      .required()
+      .string()
+      .minLength(6)
+      .maxLength(50);
     ValidatorRules.validate(description, "description").string();
     if (isActive) {
       ValidatorRules.validate(isActive, "isActive").boolean();
