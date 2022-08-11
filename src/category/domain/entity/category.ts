@@ -1,6 +1,7 @@
-import { ValidatorRules } from "../../../@seedwork/validators/ValidatorRules";
 import { BaseEntity } from "../../../@seedwork/domain/entity/BaseEntity";
 import { UniqueIdentity } from "../../../@seedwork/domain/valueObjects/unique_identity";
+// eslint-disable-next-line import/no-cycle
+import { CategoryValidatorFactory } from "../validators/category_validator";
 
 export interface CategoryState {
 
@@ -48,7 +49,7 @@ export class Category extends BaseEntity<CategoryState> {
     return "Category updated";
   }
 
-  static validate({ name, description, isActive }: Omit<CategoryState, "id" | "createdAt">) {
+  /*  static validate({ name, description, isActive }: Omit<CategoryState, "id" | "createdAt">) {
     ValidatorRules
       .validate(name, "name")
       .required()
@@ -59,6 +60,12 @@ export class Category extends BaseEntity<CategoryState> {
     if (isActive) {
       ValidatorRules.validate(isActive, "isActive").boolean();
     }
+  } */
+
+  static validate(data: CategoryState) {
+    const validator = CategoryValidatorFactory.create();
+
+    validator.validate(data);
   }
 
   private set IsActive(isActive: boolean | undefined) {

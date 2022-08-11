@@ -1,4 +1,4 @@
-import { ValidatorRules } from "./ValidatorRules";
+import { ValidatorRules } from "../ValidatorRules";
 
 describe("ValidatorRules", () => {
   it.each`
