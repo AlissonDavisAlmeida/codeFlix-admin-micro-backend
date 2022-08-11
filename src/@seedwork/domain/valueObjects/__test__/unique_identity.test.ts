@@ -1,5 +1,5 @@
 import { validate } from "uuid";
-import { InvalidUuidError } from "../../../errors/invalid_uuid.error";
+import { InvalidUuidError } from "../../errors/invalid_uuid.error";
 import { UniqueIdentity } from "../unique_identity";
 
 describe("Unique identity unit test", () => {

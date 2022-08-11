@@ -1,7 +1,7 @@
 import {
   IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, MaxLength,
 } from "class-validator";
-import { ClassValidator } from "../../../@seedwork/validators/class-validator-field";
+import { ClassValidator } from "../../../@seedwork/domain/validators/class-validator-field";
 // eslint-disable-next-line import/no-cycle
 import { CategoryState } from "../entity/category";
 

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ValidatorError } from "../../../@seedwork/errors/validation_error";
+import { ValidatorError } from "../../../@seedwork/domain/errors/validation_error";
 import { Category } from "./category";
 
 describe("Integration tests Category", () => {

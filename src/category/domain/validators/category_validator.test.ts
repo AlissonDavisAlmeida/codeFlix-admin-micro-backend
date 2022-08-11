@@ -8,8 +8,17 @@ describe("Category Validator", () => {
   });
 
   it("invalidation cases for name field", () => {
-    let isValid = validator.validate(null);
+    const isValid = validator.validate(null);
 
+    expect({ validator, data: null }).containsErrorMessages({
+      name: [
+        "name should not be empty",
+        "name must be a string",
+        "name must be shorter than or equal to 255 characters",
+      ],
+    });
+
+    /*
     expect(isValid).toBe(false);
     expect(validator.errors["name"]).toStrictEqual([
       "name should not be empty",
@@ -36,7 +45,7 @@ describe("Category Validator", () => {
     expect(isValid).toBe(false);
     expect(validator.errors["name"]).toStrictEqual([
       "name must be shorter than or equal to 255 characters",
-    ]);
+    ]); */
   });
 
   it("valid cases for fields", () => {
