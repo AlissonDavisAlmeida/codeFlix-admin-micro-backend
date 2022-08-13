@@ -1,28 +1,58 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ValidatorError } from "../../../@seedwork/domain/errors/validation_error";
+import { EntityValidationError } from "../../../@seedwork/domain/errors/validation_error";
 import { Category } from "./category";
 
 describe("Integration tests Category", () => {
   describe("Create Category", () => {
     it("should a invalid category using field name", () => {
-      expect(() => new Category({ name: null })).toThrowError(new ValidatorError("Value is required"));
+      expect(() => new Category({ name: null })).containsErrorMessages({
+        name: [
+          "name should not be empty",
+          "name must be a string",
+          "name must be shorter than or equal to 255 characters",
+        ],
+      });
 
-      expect(() => new Category({ name: "" })).toThrowError(new ValidatorError("Value is required"));
+      expect(() => new Category({ name: "" })).containsErrorMessages({
+        name: [
+          "name should not be empty",
 
-      expect(() => new Category({ name: 4 as any })).toThrowError(new ValidatorError("Value must be a string"));
+        ],
+      });
 
-      expect(() => new Category({ name: "a".repeat(51) })).toThrowError(new ValidatorError("Value must be at most 50 characters long"));
+      expect(() => new Category({ name: 4 as any })).containsErrorMessages({
+        name: [
+          "name must be a string",
+          "name must be shorter than or equal to 255 characters",
 
-      expect(() => new Category({ name: "a".repeat(5) })).toThrowError(new ValidatorError("Value must be at least 6 characters long"));
+        ],
+      });
+
+      expect(() => new Category({ name: "a".repeat(500) })).containsErrorMessages({
+        name: [
+
+          "name must be shorter than or equal to 255 characters",
+
+        ],
+      });
     });
 
     it("should a invalid category using field description", () => {
-      expect(() => new Category({ name: "name test", description: 4 as any })).toThrowError(new ValidatorError("Value must be a string"));
+      expect(() => new Category({ name: "name test", description: 4 as any }))
+        .containsErrorMessages({
+          description: [
+            "description must be a string",
+          ],
+        });
     });
 
     it("should a invalid category using field isActive", () => {
-      expect(() => new Category({ name: "name test", description: "some description", isActive: 4 as any }))
-        .toThrowError(new ValidatorError("Value must be a boolean"));
+      expect(() => new Category({ name: "name test", isActive: 4 as any }))
+        .containsErrorMessages({
+          isActive: [
+            "isActive must be a boolean value",
+          ],
+        });
     });
 
     it("should a valid category", () => {
@@ -42,25 +72,42 @@ describe("Integration tests Category", () => {
       const category = new Category({ name: "name test" });
 
       expect(() => category.update({ name: null, description: null }))
-        .toThrowError(new ValidatorError("Value is required"));
+        .containsErrorMessages({
+          name: [
+            "name should not be empty",
+            "name must be a string",
+            "name must be shorter than or equal to 255 characters",
+          ],
+        });
 
       expect(() => category.update({ name: "", description: null }))
-        .toThrowError(new ValidatorError("Value is required"));
+        .containsErrorMessages({
+          name: [
+            "name should not be empty",
+          ],
+        });
 
       expect(() => category.update({ name: 5 as any, description: null }))
-        .toThrowError(new ValidatorError("Value must be a string"));
+        .containsErrorMessages({
+          name: [
+            "name must be a string",
+            "name must be shorter than or equal to 255 characters",
+          ],
+        });
 
-      expect(() => category.update({ name: "a".repeat(51), description: null }))
-        .toThrowError(new ValidatorError("Value must be at most 50 characters long"));
+      expect(() => category.update({ name: "a".repeat(510), description: null }))
+        .containsErrorMessages({
+          name: [
+            "name must be shorter than or equal to 255 characters",
+          ],
+        });
 
-      expect(() => category.update({ name: "a".repeat(5), description: null }))
-        .toThrowError(new ValidatorError("Value must be at least 6 characters long"));
-    });
-
-    it("should a invalid category using field description", () => {
-      const category = new Category({ name: "name test", description: "some description" });
-      expect(() => category.update({ name: "name test", description: 4 as any }))
-        .toThrowError(new ValidatorError("Value must be a string"));
+      expect(() => category.update({ name: "a".repeat(500), description: null }))
+        .containsErrorMessages({
+          name: [
+            "name must be shorter than or equal to 255 characters",
+          ],
+        });
     });
   });
 });

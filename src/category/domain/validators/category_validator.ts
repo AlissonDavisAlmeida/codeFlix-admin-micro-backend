@@ -15,9 +15,9 @@ export class CategoryRules {
   @IsOptional()
     description: string;
 
-  @IsBoolean()
   @IsOptional()
-    is_active: string;
+  @IsBoolean()
+    isActive: boolean;
 
   @IsDate()
   @IsOptional()

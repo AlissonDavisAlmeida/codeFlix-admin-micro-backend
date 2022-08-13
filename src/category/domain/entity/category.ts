@@ -1,3 +1,4 @@
+import { EntityValidationError } from "../../../@seedwork/domain/errors/validation_error";
 import { BaseEntity } from "../../../@seedwork/domain/entity/BaseEntity";
 import { UniqueIdentity } from "../../../@seedwork/domain/valueObjects/unique_identity";
 // eslint-disable-next-line import/no-cycle
@@ -65,7 +66,10 @@ export class Category extends BaseEntity<CategoryState> {
   static validate(data: CategoryState) {
     const validator = CategoryValidatorFactory.create();
 
-    validator.validate(data);
+    const isValid = validator.validate(data);
+    if (!isValid) {
+      throw new EntityValidationError(validator.errors);
+    }
   }
 
   private set IsActive(isActive: boolean | undefined) {

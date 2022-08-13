@@ -1,28 +1,48 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { expect } from "expect";
+import { EntityValidationError } from "../errors/validation_error";
 import { ClassValidator } from "../validators/class-validator-field";
 import { FieldsErrors } from "../validators/ValidatorFields_interface";
 
-type Expected = { validator: ClassValidator<any>, data: any };
+type Expected = { validator: ClassValidator<any>, data: any } | (() => void);
+
+function isValid() {
+  return { pass: true, message: () => "" };
+}
+
+function assertContainsErrors(received: FieldsErrors, expected: FieldsErrors) {
+  const isMatch = expect.objectContaining(received).asymmetricMatch(expected);
+
+  return isMatch ? { pass: true, message: () => "" } : {
+    pass: false,
+    message: () => `The validation errors not contains ${JSON.stringify(received)} 
+                                                                          Current: ${JSON.stringify(expected)}`,
+  };
+}
 
 expect.extend({
   containsErrorMessages(expected: Expected, received: FieldsErrors) {
-    const isValid = expected.validator.validate(expected.data);
+    if (typeof expected === "function") {
+      try {
+        expected();
+        return {
+          pass: false,
+          message: () => "The data is valid",
+        };
+      } catch (e) {
+        const error = e as EntityValidationError;
 
-    if (isValid) {
-      return {
-        pass: false,
-        message: () => "The data is valid",
-      };
+        return assertContainsErrors(received, error.error);
+      }
+    } else {
+      const isVal = expected.validator.validate(expected.data);
+
+      if (isVal) {
+        return isValid();
+      }
+
+      return assertContainsErrors(received, expected.validator.errors);
     }
-
-    const isMatch = expect.objectContaining(received).asymmetricMatch(expected.validator.errors);
-
-    return isMatch ? { pass: true, message: () => "" } : {
-      pass: false,
-      message: () => `The validation errors not contains ${JSON.stringify(received)} 
-                                                                        Current: ${JSON.stringify(expected.validator.errors)}`,
-    };
   },
 
 });
