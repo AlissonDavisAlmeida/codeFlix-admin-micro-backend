@@ -26,7 +26,7 @@ export abstract class InMemoryRepository<T extends BaseEntity> implements Reposi
   async update(entity: T): Promise<T> {
     let foundItem = await this.getItemFromId(entity.id);
 
-    foundItem = structuredClone(entity);
+    foundItem = JSON.parse(JSON.stringify(entity));
 
     this.items = this.items.map((item: T) => (item.id === foundItem.id ? foundItem : item));
 

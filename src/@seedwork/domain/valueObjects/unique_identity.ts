@@ -14,4 +14,6 @@ export class UniqueIdentity extends ValueObject<string> {
       throw new InvalidUuidError(`Invalid UUID: ${this.value}`);
     }
   }
+
+  toString = (): string => this.value;
 }
