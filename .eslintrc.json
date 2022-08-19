@@ -24,6 +24,8 @@
         "class-methods-use-this":"off",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/ban-ts-comment": "off",
-        "max-classes-per-file":"off"
+        "max-classes-per-file":"off",
+        "max-len":"off",
+        "@typescript-eslint/no-empty-interface": "off"
     }
 }

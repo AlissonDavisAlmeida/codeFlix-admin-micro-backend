@@ -10,3 +10,7 @@ export interface RepositoryInterface<T extends BaseEntity> {
   delete(id: string | UniqueIdentity): Promise<void>;
 
 }
+
+export interface SearchableRepositoryInterface<T extends BaseEntity, SearchParams, SearchResult> extends RepositoryInterface<T> {
+  search(query: SearchParams): Promise<SearchResult>;
+}
