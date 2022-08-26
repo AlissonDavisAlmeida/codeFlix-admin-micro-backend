@@ -1,7 +1,7 @@
 import { BaseEntity } from "../entity/BaseEntity";
 import { NotFoundError } from "../errors/not-found.error";
 import { UniqueIdentity } from "../valueObjects/unique_identity";
-import { RepositoryInterface } from "./repository.interface";
+import { RepositoryInterface, SearchableRepositoryInterface } from "./repository.interface";
 
 export abstract class InMemoryRepository<T extends BaseEntity> implements RepositoryInterface<T> {
   items: T[] = [];
@@ -48,5 +48,13 @@ export abstract class InMemoryRepository<T extends BaseEntity> implements Reposi
     }
 
     return itemDiscovery;
+  }
+}
+
+export abstract class InMemorySearchableRepository<T extends BaseEntity>
+  extends InMemoryRepository<T>
+  implements SearchableRepositoryInterface<T, any, any> {
+  search(query: any): Promise<any> {
+    throw new Error("Method not implemented.");
   }
 }
