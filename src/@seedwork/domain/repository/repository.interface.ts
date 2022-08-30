@@ -1,3 +1,4 @@
+import { isBoolean } from "lodash";
 import { BaseEntity } from "../entity/BaseEntity";
 import { UniqueIdentity } from "../valueObjects/unique_identity";
 
@@ -43,7 +44,14 @@ export class SearchParams {
   }
 
   private set page(value: number) {
+    let page = Number(value);
 
+    // eslint-disable-next-line radix
+    if (Number.isNaN(page) || page < 1 || parseInt(page.toString()) !== page) {
+      page = 1;
+    }
+
+    this._page = page;
   }
 
   get per_page(): number {
@@ -51,6 +59,16 @@ export class SearchParams {
   }
 
   private set per_page(value: number) {
+    if (isBoolean(value)) {
+      return;
+    }
+    let per_page = Number(value);
+
+    // eslint-disable-next-line radix
+    if (Number.isNaN(per_page) || per_page <= 0 || parseInt(per_page.toString()) !== per_page) {
+      per_page = this._per_page;
+    }
+    this._per_page = per_page;
   }
 
   get sort(): string {
@@ -58,7 +76,7 @@ export class SearchParams {
   }
 
   private set sort(value: string | null) {
-
+    this._sort = !value ? null : value;
   }
 
   get sort_dir(): string {
@@ -66,16 +84,26 @@ export class SearchParams {
   }
 
   private set sort_dir(value: string | null) {
+    if (!this.sort) {
+      this._sort_dir = null;
+      return;
+    }
 
+    const dir = value.trim().toLowerCase();
+    this._sort_dir = dir !== "asc" && dir !== "desc" ? "asc" : dir;
   }
 
   get filter(): string {
     return this._filter;
   }
 
-  private set filter(value: string | null) {}
+  private set filter(value: string | null) {
+    this._filter = !value ? null : value;
+  }
 }
 
-export interface SearchableRepositoryInterface<T extends BaseEntity, SearchInput, SearchOutput> extends RepositoryInterface<T> {
+export interface SearchableRepositoryInterface<T extends BaseEntity, SearchOutput, SearchInput = SearchParams>
+  extends RepositoryInterface<T> {
+
   search(query: SearchInput): Promise<SearchOutput>;
 }
