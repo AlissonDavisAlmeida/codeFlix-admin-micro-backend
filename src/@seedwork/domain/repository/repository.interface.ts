@@ -76,7 +76,7 @@ export class SearchParams {
   }
 
   private set sort(value: string | null) {
-    this._sort = !value ? null : value;
+    this._sort = value === null || value === undefined || value === "" ? null : value.toString();
   }
 
   get sort_dir(): string {
@@ -89,7 +89,7 @@ export class SearchParams {
       return;
     }
 
-    const dir = value.trim().toLowerCase();
+    const dir = `${value}`.trim().toLowerCase();
     this._sort_dir = dir !== "asc" && dir !== "desc" ? "asc" : dir;
   }
 
@@ -98,7 +98,7 @@ export class SearchParams {
   }
 
   private set filter(value: string | null) {
-    this._filter = !value ? null : value;
+    this._filter = !value ? null : `${value}`;
   }
 }
 
