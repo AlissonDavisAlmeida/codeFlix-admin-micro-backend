@@ -71,7 +71,7 @@ export class SearchParams {
     this._per_page = per_page;
   }
 
-  get sort(): string {
+  get sort(): string | null {
     return this._sort;
   }
 
@@ -79,7 +79,7 @@ export class SearchParams {
     this._sort = value === null || value === undefined || value === "" ? null : value.toString();
   }
 
-  get sort_dir(): string {
+  get sort_dir(): "asc" | "desc" | null {
     return this._sort_dir;
   }
 
@@ -93,7 +93,7 @@ export class SearchParams {
     this._sort_dir = dir !== "asc" && dir !== "desc" ? "asc" : dir;
   }
 
-  get filter(): string {
+  get filter(): string | null {
     return this._filter;
   }
 
@@ -102,8 +102,64 @@ export class SearchParams {
   }
 }
 
-export interface SearchableRepositoryInterface<T extends BaseEntity, SearchOutput, SearchInput = SearchParams>
-  extends RepositoryInterface<T> {
+type SearchResultProps<Entity extends BaseEntity, Filter> = {
+  items: Entity[];
+  total: number;
+  current_page: number
+  per_page: number
+  sort: string | null
+  sort_dir: "asc" | "desc" | null
+  filter: Filter | null
+};
 
+export class SearchResult<Entity extends BaseEntity, Filter = string> {
+  readonly items: Entity[];
+
+  readonly total: number;
+
+  readonly current_page: number;
+
+  readonly per_page: number;
+
+  readonly last_page: number;
+
+  readonly sort: string | null;
+
+  readonly sort_dir: "asc" | "desc" | null;
+
+  readonly filter: Filter;
+
+  constructor(props: SearchResultProps<Entity, Filter>) {
+    this.items = props.items;
+    this.total = props.total;
+    this.current_page = props.current_page;
+    this.per_page = props.per_page;
+    this.last_page = Math.ceil(this.total / this.per_page);
+    this.sort = props.sort;
+    this.sort_dir = props.sort_dir;
+    this.filter = props.filter;
+  }
+
+  toJSON() {
+    return {
+      items: this.items,
+      total: this.total,
+      current_page: this.current_page,
+      per_page: this.per_page,
+      last_page: this.last_page,
+      sort: this.sort,
+      sort_dir: this.sort_dir,
+      filter: this.filter,
+    };
+  }
+}
+
+export interface SearchableRepositoryInterface
+  <T extends BaseEntity,
+  Filter = string,
+  SearchInput = SearchParams,
+  SearchOutput = SearchResult<T, Filter>>
+  extends RepositoryInterface<T> {
+  sortableFields: string[];
   search(query: SearchInput): Promise<SearchOutput>;
 }

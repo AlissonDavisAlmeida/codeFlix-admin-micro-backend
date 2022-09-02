@@ -1,4 +1,4 @@
-import { SearchParams } from "./repository.interface";
+import { SearchParams, SearchResult } from "./repository.interface";
 
 describe("Search Params Unit Tests", () => {
   test("page prop", () => {
@@ -116,6 +116,54 @@ describe("Search Params Unit Tests", () => {
 
     arrange.forEach((item) => {
       expect(new SearchParams({ filter: item.filter }).filter).toBe(item.expected);
+    });
+  });
+});
+
+describe("SearchResult unit tests", () => {
+  test("constructor", () => {
+    const search = new SearchResult({
+      items: ["item1", "item2"] as any,
+      total: 5,
+      current_page: 1,
+      per_page: 2,
+      filter: null,
+      sort: null,
+      sort_dir: null,
+    });
+
+    expect(search.toJSON()).toStrictEqual({
+      items: ["item1", "item2"],
+      total: 5,
+      current_page: 1,
+      per_page: 2,
+      filter: null,
+      sort: null,
+      sort_dir: null,
+      last_page: 3,
+    });
+  });
+
+  it("should set last_page to 1 when per_page is greater than total", () => {
+    const search = new SearchResult({
+      items: ["item1", "item2"] as any,
+      total: 4,
+      current_page: 1,
+      per_page: 10,
+      filter: null,
+      sort: null,
+      sort_dir: null,
+    });
+
+    expect(search.toJSON()).toStrictEqual({
+      items: ["item1", "item2"],
+      total: 4,
+      current_page: 1,
+      per_page: 10,
+      filter: null,
+      sort: null,
+      sort_dir: null,
+      last_page: 1,
     });
   });
 });
