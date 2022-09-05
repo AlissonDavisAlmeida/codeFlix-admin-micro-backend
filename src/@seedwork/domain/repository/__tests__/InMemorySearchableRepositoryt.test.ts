@@ -1,4 +1,4 @@
-import { BaseEntity } from "@seedwork/domain/entity/BaseEntity";
+import { BaseEntity } from "../../entity/BaseEntity";
 import { InMemorySearchableRepository } from "../inMemory.repository";
 
 type StubEntityProps = {
@@ -6,12 +6,12 @@ type StubEntityProps = {
   price: number;
 };
 
-class StubEntity extends BaseEntity<StubEntityProps> {}
+class StubEntity extends BaseEntity<StubEntityProps> { }
 
 class StubInMemorySearchableRepository extends InMemorySearchableRepository<
 StubEntity
 > {
-  protected async applyFilter(items: StubEntity[], filter: string): Promise<StubEntity[]> {
+  protected async applyFilter(items: StubEntity[], filter: string | null): Promise<StubEntity[]> {
     if (!filter) {
       return items;
     }
@@ -30,12 +30,61 @@ describe("InMemorySearchableRepository unit tests", () => {
     repository = new StubInMemorySearchableRepository();
   });
   describe("applyFilter method", () => {
+    it("should no filter items when filter param is null", async () => {
+      const items = [new StubEntity({
+        name: "Item 1",
+        price: 10,
+      })];
 
+      const methodFilter = jest.spyOn(items, "filter");
+
+      const result = await repository["applyFilter"](items, null);
+
+      expect(result).toStrictEqual(items);
+      expect(methodFilter).not.toHaveBeenCalled();
+    });
+
+    it("should filter items by name", async () => {
+      const items = [
+        new StubEntity({
+          name: "Item 1",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "Item 2",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "ITEM 2",
+          price: 20,
+        }),
+      ];
+
+      const methodFilter = jest.spyOn(items, "filter");
+
+      let result = await repository["applyFilter"](items, "item 1");
+
+      expect(result).toStrictEqual([items[0]]);
+
+      result = await repository["applyFilter"](items, "ITEM 2");
+
+      expect(result).toStrictEqual([...items.slice(1, 3)]);
+
+      result = await repository["applyFilter"](items, "20");
+
+      expect(result).toStrictEqual([...items.slice(1, 3)]);
+
+      result = await repository["applyFilter"](items, "10");
+
+      expect(result).toStrictEqual([items[0]]);
+
+      expect(methodFilter).toHaveBeenCalledTimes(4);
+    });
   });
 
-  describe("sort method", () => {});
+  describe("sort method", () => { });
 
-  describe("pagination method", () => {});
+  describe("pagination method", () => { });
 
-  describe("search method", () => {});
+  describe("search method", () => { });
 });
