@@ -1,4 +1,4 @@
-import { SearchParams, SearchResult } from "./repository.interface";
+import { SearchParams, SearchResult } from "../repository.interface";
 
 describe("Search Params Unit Tests", () => {
   test("page prop", () => {
