@@ -78,9 +78,9 @@ export abstract class InMemorySearchableRepository<T extends BaseEntity>
 
   protected abstract applyFilter(items: T[], filter: string | null): Promise<T[]>;
 
-  protected async applySort(items: T[], sort: string | null, sort_dir: string | null): Promise<T[]> {
+  protected async applySort(items: T[], sort: string | null, sort_dir: "asc" | "desc" | null): Promise<T[]> {
     if (sort || this.sortableFields.includes(sort)) {
-      [...items].sort((a, b) => {
+      return [...items].sort((a, b) => {
         if (a.props[sort] < b.props[sort]) {
           return sort_dir === "asc" ? -1 : 1;
         }
@@ -91,14 +91,13 @@ export abstract class InMemorySearchableRepository<T extends BaseEntity>
         return 0;
       });
     }
-
     return items;
   }
 
   protected async applyPagination(
     items: T[],
-    page: SearchParams["_page"],
-    per_page: SearchParams["_per_page"],
+    page: SearchParams["_page"] = 1,
+    per_page: SearchParams["_per_page"] = 10,
   ): Promise<T[]> {
     const start = (page - 1) * per_page;
     const end = start + per_page;
