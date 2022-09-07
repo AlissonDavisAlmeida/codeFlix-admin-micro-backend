@@ -1,5 +1,6 @@
 import { BaseEntity } from "../../entity/BaseEntity";
 import { InMemorySearchableRepository } from "../inMemory.repository";
+import { SearchParams, SearchResult } from "../repository.interface";
 
 type StubEntityProps = {
   name: string;
@@ -202,5 +203,257 @@ describe("InMemorySearchableRepository unit tests", () => {
     }); */
   });
 
-  describe("search method", () => { });
+  describe("search method", () => {
+    it("should apply only paginate when order params are null", async () => {
+      const entity = new StubEntity({ name: "Item 1", price: 10 });
+      const items = Array(16).fill(entity);
+      repository.items = items;
+      const result = await repository.search(new SearchParams());
+
+      expect(result).toStrictEqual(new SearchResult({
+        items: Array(15).fill(entity),
+        total: 16,
+        current_page: 1,
+        per_page: 15,
+        sort: null,
+        sort_dir: null,
+        filter: null,
+      }));
+    });
+
+    it("should apply paginate and filter", async () => {
+      const items = [
+        new StubEntity({
+          name: "Item",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "item",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "ItEM",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "d",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "e",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "f",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "iTEM",
+          price: 20,
+        }),
+      ];
+      repository.items = items;
+
+      let result = await repository.search(new SearchParams({
+        page: 1,
+        per_page: 3,
+        filter: "item",
+      }));
+
+      expect(result).toStrictEqual(new SearchResult({
+        items: [items[0], items[1], items[2]],
+        total: 4,
+        current_page: 1,
+        per_page: 3,
+        sort: null,
+        sort_dir: null,
+        filter: "item",
+      }));
+
+      result = await repository.search(new SearchParams({
+        page: 2,
+        per_page: 2,
+        filter: "item",
+      }));
+
+      expect(result).toStrictEqual(new SearchResult({
+        items: [items[2], items[6]],
+        total: 4,
+        current_page: 2,
+        per_page: 2,
+        sort: null,
+        sort_dir: null,
+        filter: "item",
+      }));
+    });
+
+    it("should apply paginate and sort", async () => {
+      const items = [
+        new StubEntity({
+          name: "b",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "a",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "c",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "d",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "e",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "f",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "g",
+          price: 20,
+        }),
+      ];
+      repository.items = items;
+
+      let result = await repository.search(new SearchParams({
+        page: 1,
+        per_page: 3,
+        sort: "name",
+      }));
+
+      expect(result).toStrictEqual(new SearchResult({
+        items: [items[1], items[0], items[2]],
+        total: 7,
+        current_page: 1,
+        per_page: 3,
+        sort: "name",
+        sort_dir: "asc",
+        filter: null,
+      }));
+
+      result = await repository.search(new SearchParams({
+        page: 2,
+        per_page: 2,
+        sort: "name",
+      }));
+
+      expect(result).toStrictEqual(new SearchResult({
+        items: [items[2], items[3]],
+        total: 7,
+        current_page: 2,
+        per_page: 2,
+        sort: "name",
+        sort_dir: "asc",
+        filter: null,
+      }));
+
+      result = await repository.search(new SearchParams({
+        page: 1,
+        per_page: 4,
+        sort: "name",
+        sort_dir: "desc",
+      }));
+
+      expect(result).toStrictEqual(new SearchResult({
+        items: [items[6], items[5], items[4], items[3]],
+        total: 7,
+        current_page: 1,
+        per_page: 4,
+        sort: "name",
+        sort_dir: "desc",
+        filter: null,
+      }));
+    });
+
+    it("should apply paginate, filter and sort", async () => {
+      const items = [
+        new StubEntity({
+          name: "b",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "a",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "c",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "d",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "e",
+          price: 10,
+        }),
+        new StubEntity({
+          name: "f",
+          price: 20,
+        }),
+        new StubEntity({
+          name: "g",
+          price: 20,
+        }),
+      ];
+      repository.items = items;
+
+      let result = await repository.search(new SearchParams({
+        page: 1,
+        per_page: 3,
+        sort: "name",
+        filter: "b",
+      }));
+
+      expect(result).toStrictEqual(new SearchResult({
+        items: [items[0]],
+        total: 1,
+        current_page: 1,
+        per_page: 3,
+        sort: "name",
+        sort_dir: "asc",
+        filter: "b",
+      }));
+
+      result = await repository.search(new SearchParams({
+        page: 2,
+        per_page: 2,
+        sort: "name",
+        filter: "a",
+      }));
+
+      expect(result).toStrictEqual(new SearchResult({
+        items: [],
+        total: 1,
+        current_page: 2,
+        per_page: 2,
+        sort: "name",
+        sort_dir: "asc",
+        filter: "a",
+      }));
+
+      result = await repository.search(new SearchParams({
+        page: 1,
+        per_page: 4,
+        sort: "name",
+        sort_dir: "desc",
+        filter: "a",
+      }));
+
+      expect(result).toStrictEqual(new SearchResult({
+        items: [items[1]],
+        total: 1,
+        current_page: 1,
+        per_page: 4,
+        sort: "name",
+        sort_dir: "desc",
+        filter: "a",
+      }));
+    });
+  });
 });
