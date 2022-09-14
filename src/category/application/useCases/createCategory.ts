@@ -1,5 +1,6 @@
 import { Category } from "../../domain/entity/category";
 import { CategoryRepository } from "../../domain/repository/category-repository";
+import { CategoryOutput } from "../dto/category.output";
 
 interface ICreateCategoryInputDTO {
   name: string;
@@ -7,20 +8,12 @@ interface ICreateCategoryInputDTO {
   isActive?: boolean;
 }
 
-interface ICreateCategoryOutputDTO {
-  id: string
-  name: string;
-  description: string | null;
-  is_active: boolean;
-  created_at: Date;
-}
-
 export class CreateCategory {
   constructor(private readonly categoryRepository: CategoryRepository.Repository) {
 
   }
 
-  async execute(input: ICreateCategoryInputDTO): Promise<ICreateCategoryOutputDTO> {
+  async execute(input: ICreateCategoryInputDTO): Promise<CategoryOutput> {
     const category = new Category({ ...input });
     const categoryCreated = await this.categoryRepository.save(category);
 
