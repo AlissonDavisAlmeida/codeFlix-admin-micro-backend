@@ -1,3 +1,4 @@
+import { UseCase } from "../../../@seedwork/application/useCase";
 import { Category } from "../../domain/entity/category";
 import { CategoryRepository } from "../../domain/repository/category-repository";
 import { CategoryOutput } from "../dto/category.output";
@@ -8,7 +9,7 @@ interface ICreateCategoryInputDTO {
   isActive?: boolean;
 }
 
-export class CreateCategory {
+export class CreateCategory implements UseCase<ICreateCategoryInputDTO, CategoryOutput> {
   constructor(private readonly categoryRepository: CategoryRepository.Repository) {
 
   }
