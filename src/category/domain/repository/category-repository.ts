@@ -2,7 +2,7 @@ import {
   SearchableRepositoryInterface,
   SearchParams as DefaultSearchParams,
   SearchResult as DefaultSearchResult,
-} from "@seedwork/domain/repository/repository.interface";
+} from "../../../@seedwork/domain/repository/repository.interface";
 import { Category } from "../entity/category";
 
 export namespace CategoryRepository {
@@ -25,22 +25,3 @@ export namespace CategoryRepository {
 
   }
 }
-
-// export type CategoryFilter = string;
-
-// export class CategorySearchParams extends SearchParams<CategoryFilter> {
-
-// }
-
-// export class CategorySearchResult extends SearchResult<Category, CategoryFilter> {
-
-// }
-
-// export interface CategoryRepositoryInterface extends
-//   SearchableRepositoryInterface<
-//   Category,
-//   CategoryFilter,
-//   CategorySearchParams,
-//   CategorySearchResult> {
-
-// }

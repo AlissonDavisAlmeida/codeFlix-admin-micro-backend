@@ -1,4 +1,4 @@
-import { PaginationOutputDTO, PaginationOutputMapper } from "@seedwork/application/dto/pagination-output.dto";
+import { PaginationOutputDTO, PaginationOutputMapper } from "../../../@seedwork/application/dto/pagination-output.dto";
 import { CategoryRepository } from "../../domain/repository/category-repository";
 import { UseCase } from "../../../@seedwork/application/useCase";
 import { CategoryOutput, CategoryOutputMapper } from "../dto/category.output";

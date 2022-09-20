@@ -50,19 +50,6 @@ export class Category extends BaseEntity<CategoryState> {
     return "Category updated";
   }
 
-  /*  static validate({ name, description, isActive }: Omit<CategoryState, "id" | "createdAt">) {
-    ValidatorRules
-      .validate(name, "name")
-      .required()
-      .string()
-      .minLength(6)
-      .maxLength(50);
-    ValidatorRules.validate(description, "description").string();
-    if (isActive) {
-      ValidatorRules.validate(isActive, "isActive").boolean();
-    }
-  } */
-
   static validate(data: CategoryState) {
     const validator = CategoryValidatorFactory.create();
 
