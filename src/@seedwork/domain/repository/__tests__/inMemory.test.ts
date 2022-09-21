@@ -31,9 +31,9 @@ describe("InMemoryRepository", () => {
   });
 
   it("should throws error when entity not found", async () => {
-    await expect(repository.findById("test")).rejects.toThrow(new NotFoundError("Item not found with id: test"));
+    await expect(repository.findById("test")).rejects.toThrow(new NotFoundError("Category not found"));
     await expect(repository.findById("0fdb4026-4df1-4522-96d2-27c6ce868212"))
-      .rejects.toThrow(new NotFoundError("Item not found with id: 0fdb4026-4df1-4522-96d2-27c6ce868212"));
+      .rejects.toThrow(new NotFoundError("Category not found"));
   });
 
   it("should find an entity by id", async () => {
@@ -64,7 +64,7 @@ describe("InMemoryRepository", () => {
   it("should throws error on update when entity not found", async () => {
     const entity = new StubEntity({ name: "test", price: 1 });
 
-    await expect(repository.update(entity)).rejects.toThrow(new NotFoundError(`Item not found with id: ${entity.id}`));
+    await expect(repository.update(entity)).rejects.toThrow(new NotFoundError("Category not found"));
   });
 
   it("should update an entity", async () => {
@@ -79,7 +79,7 @@ describe("InMemoryRepository", () => {
   it("should throws error on delete when entity not found", async () => {
     const entity = new StubEntity({ name: "test", price: 1 });
 
-    await expect(repository.delete(entity.id)).rejects.toThrow(new NotFoundError(`Item not found with id: ${entity.id}`));
+    await expect(repository.delete(entity.id)).rejects.toThrow(new NotFoundError("Category not found"));
   });
 
   it("should delete an entity", async () => {

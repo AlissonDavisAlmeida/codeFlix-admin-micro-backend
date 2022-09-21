@@ -9,7 +9,6 @@ implements ValidatorFieldsInterface<PropsValidated> {
 
   validate(data: any): boolean {
     const errors = validateSync(data);
-    console.log(errors);
     if (errors.length > 0) {
       this.errors = {};
 

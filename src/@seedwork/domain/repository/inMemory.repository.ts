@@ -46,7 +46,7 @@ export abstract class InMemoryRepository<T extends BaseEntity> implements Reposi
     const itemDiscovery = this.items.find((item: T) => item.id === id);
 
     if (!itemDiscovery) {
-      throw new NotFoundError(`Item not found with id: ${id}`);
+      throw new NotFoundError("Category not found");
     }
 
     return itemDiscovery;
@@ -80,7 +80,6 @@ export abstract class InMemorySearchableRepository<T extends BaseEntity>
 
   protected async applySort(items: T[], sort: string | null, sort_dir: "asc" | "desc" | null): Promise<T[]> {
     if (sort || this.sortableFields.includes(sort)) {
-      console.log(items);
       return [...items].sort((a, b) => {
         if (a.props[sort] < b.props[sort]) {
           return sort_dir === "asc" ? -1 : 1;
