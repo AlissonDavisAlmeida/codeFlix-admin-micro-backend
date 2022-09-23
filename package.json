@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest --watchAll",
     "ts-node": "ts-node",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "tsc:check": "npm run tsc -- --noEmit",
+    "test:cover": "npm run test -- --coverage"
   },
   "keywords": [],
   "author": "",
