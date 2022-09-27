@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1664244703671" clover="3.2.0">
+  <project timestamp="1664244703671" name="All files">
+    <metrics statements="15" coveredstatements="15" conditionals="6" coveredconditionals="6" methods="8" coveredmethods="8" elements="29" coveredelements="29" complexity="0" loc="15" ncloc="15" packages="1" files="1" classes="1"/>
+    <file name="Category.ts" path="/home/node/app/src/category/domain/entities/Category.ts">
+      <metrics statements="15" coveredstatements="15" conditionals="6" coveredconditionals="6" methods="8" coveredmethods="8"/>
+      <line num="8" count="2" type="stmt"/>
+      <line num="9" count="2" type="stmt"/>
+      <line num="11" count="2" type="stmt"/>
+      <line num="13" count="2" type="stmt"/>
+      <line num="15" count="2" type="stmt"/>
+      <line num="18" count="2" type="stmt"/>
+      <line num="19" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="20" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="21" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="25" count="2" type="stmt"/>
+      <line num="29" count="2" type="stmt"/>
+      <line num="33" count="2" type="stmt"/>
+      <line num="37" count="2" type="stmt"/>
+      <line num="41" count="1" type="stmt"/>
+      <line num="45" count="2" type="stmt"/>
+    </file>
+  </project>
+</coverage>

@@ -1,7 +1,4 @@
-/*
- * For a detailed explanation regarding each configuration property and type check, visit:
- * https://jestjs.io/docs/configuration
- */
+
 
 export default {
   // All imported modules in your tests should be mocked automatically
@@ -17,12 +14,12 @@ export default {
   // clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
-  collectCoverage: true,
+  // collectCoverage: true,
 
   // collectCoverageFrom: undefined,
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "<rootDir>/../__coverage",
+  // coverageDirectory: "<rootDir>/../__coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -30,15 +27,15 @@ export default {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  // coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: [
-    "json",
-    "text",
-    "lcov",
-    "clover",
-  ],
+  // coverageReporters: [
+  //   "json",
+  //   "text",
+  //   "lcov",
+  //   "clover",
+  // ],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: undefined,
@@ -128,9 +125,9 @@ export default {
 
   // setupFiles: [],
 
-  setupFilesAfterEnv: [
-    "./@seedwork/domain/tests/validations.ts",
-  ],
+  // setupFilesAfterEnv: [
+  //   "./@seedwork/domain/tests/validations.ts",
+  // ],
 
   // slowTestThreshold: 5,
 

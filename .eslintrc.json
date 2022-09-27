@@ -31,4 +31,5 @@
         "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/no-namespace": "off"
     }
+ 
 }
