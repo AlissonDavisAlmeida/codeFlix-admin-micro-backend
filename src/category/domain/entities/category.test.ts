@@ -1,3 +1,4 @@
+import { UniqueEntityID } from "../../../@seedwork/domain/uniqueEntityID";
 import { validate } from "uuid";
 import { Category } from "./Category";
 
@@ -35,7 +36,7 @@ describe("Category Entity", () => {
   });
 
   it("should test id field", () => {
-    const data: { props:{ name:string }, id?: string }[] = [
+    const data: { props:{ name:string }, id?: UniqueEntityID }[] = [
       {
         props: { name: "Category" },
       },
@@ -49,14 +50,14 @@ describe("Category Entity", () => {
       },
       {
         props: { name: "Category" },
-        id: "09f31a8d-e0a6-4757-b874-221d7cb731c8",
+        id: new UniqueEntityID(),
       },
     ];
 
     data.forEach((item) => {
       const category = new Category(item.props, item.id);
       expect(category.id).toBeTruthy();
-      expect(validate(category.id)).toBeTruthy();
+      expect(category.id).toBeInstanceOf(UniqueEntityID);
     });
   });
 
