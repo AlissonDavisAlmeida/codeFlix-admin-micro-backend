@@ -9,6 +9,10 @@ export class UniqueEntityID {
     this.validate();
   }
 
+  get id(): string {
+    return this.#id;
+  }
+
   private validate() {
     const isValid = validate(this.#id);
 

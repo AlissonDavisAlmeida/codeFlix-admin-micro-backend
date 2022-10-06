@@ -1,5 +1,5 @@
-import { UniqueEntityID } from "../../../@seedwork/domain/uniqueEntityID";
 import { validate } from "uuid";
+import { UniqueEntityID } from "../../../@seedwork/domain/uniqueEntityID";
 import { Category } from "./Category";
 
 describe("Category Entity", () => {
