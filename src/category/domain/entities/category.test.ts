@@ -1,4 +1,3 @@
-import { validate } from "uuid";
 import { UniqueEntityID } from "../../../@seedwork/domain/value-objects/uniqueEntityID";
 import { Category } from "./Category";
 
@@ -57,7 +56,7 @@ describe("Category Entity", () => {
     data.forEach((item) => {
       const category = new Category(item.props, item.id);
       expect(category.id).toBeTruthy();
-      expect(category.id).toBeInstanceOf(UniqueEntityID);
+      expect(category.uniqueEntityId).toBeInstanceOf(UniqueEntityID);
     });
   });
 
@@ -122,5 +121,30 @@ describe("Category Entity", () => {
       created_at,
     });
     expect(category.created_at).toBe(created_at);
+  });
+
+  it("should update category", () => {
+    const category = new Category({ name: "Category Test" });
+
+    category.update("Category Test 2", "Category Description 2");
+
+    expect(category.name).toBe("Category Test 2");
+    expect(category.description).toBe("Category Description 2");
+  });
+
+  it("should active a category", () => {
+    const category = new Category({ name: "Category Test", is_active: false });
+
+    category.activate();
+
+    expect(category.is_active).toBeTruthy();
+  });
+
+  it("should inactive a category", () => {
+    const category = new Category({ name: "Category Test", is_active: true });
+
+    category.deactivate();
+
+    expect(category.is_active).toBeFalsy();
   });
 });

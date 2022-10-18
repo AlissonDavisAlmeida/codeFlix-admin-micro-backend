@@ -1,12 +1,25 @@
+import { deepFreeze } from "../utils/object";
+
 export abstract class ValueObject<Value = string> {
-    protected _value: Value;
+  protected readonly _value: Value;
 
+  constructor(value: Value) {
+    this._value = deepFreeze(value);
+  }
 
-    constructor(value: Value) {
-        this._value = value;
+  get value(): Value {
+    return this._value;
+  }
+
+  toString = () => {
+    if (typeof this.value !== "object" || this.value === null) {
+      try {
+        return this.value.toString();
+      } catch (err) {
+        return `${this.value}`;
+      }
     }
-
-    get value(): Value {
-        return this._value;
-    }
+    const value = this.value.toString();
+    return value === "[object Object]" ? JSON.stringify(this.value) : value;
+  };
 }
