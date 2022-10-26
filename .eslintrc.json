@@ -31,7 +31,8 @@
         "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/no-namespace": "off",
         "no-restricted-syntax": "off",
-        "prefer-const": "off"
+        "prefer-const": "off",
+        "import/no-cycle": "off"
     }
  
 }

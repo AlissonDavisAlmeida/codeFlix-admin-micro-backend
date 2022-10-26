@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    user: root
     container_name: micro-videos
     volumes:
       - .:/home/node/app

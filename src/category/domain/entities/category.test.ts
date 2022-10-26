@@ -1,7 +1,12 @@
 import { UniqueEntityID } from "../../../@seedwork/domain/value-objects/uniqueEntityID";
 import { Category } from "./Category";
 
+// mock
+
 describe("Category Entity", () => {
+  beforeEach(() => {
+    Category.validate = jest.fn();
+  });
   it("should test constructor in category", () => {
     const props = {
       name: "Category Test",
@@ -11,6 +16,7 @@ describe("Category Entity", () => {
     };
 
     let category = new Category(props);
+    expect(Category.validate).toHaveBeenCalled();
     expect(category.name).toBe("Category Test");
     expect(category.description).toBe("Category Description");
     expect(category.is_active).toBeTruthy();
@@ -35,7 +41,7 @@ describe("Category Entity", () => {
   });
 
   it("should test id field", () => {
-    const data: { props:{ name:string }, id?: UniqueEntityID }[] = [
+    const data: { props: { name: string }, id?: UniqueEntityID }[] = [
       {
         props: { name: "Category" },
       },
@@ -128,6 +134,7 @@ describe("Category Entity", () => {
 
     category.update("Category Test 2", "Category Description 2");
 
+    expect(Category.validate).toHaveBeenCalledTimes(2);
     expect(category.name).toBe("Category Test 2");
     expect(category.description).toBe("Category Description 2");
   });
