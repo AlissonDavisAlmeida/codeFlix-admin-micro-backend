@@ -1,4 +1,4 @@
-import { ValidatorRules } from "./validatorRules";
+import { ValidatorRules } from "../validatorRules";
 
 function assertIsInvalid({
   value, property, rule, error,

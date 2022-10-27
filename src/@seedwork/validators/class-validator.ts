@@ -2,9 +2,9 @@ import { validateSync } from "class-validator";
 import { FielsErrors, ValidatorFieldsInterface } from "./validatorFieldsInterface";
 
 export abstract class ClassValidatorFields<PropsValidated> implements ValidatorFieldsInterface<PropsValidated> {
-  errors: FielsErrors;
+  errors: FielsErrors = null;
 
-  validatedData: PropsValidated;
+  validatedData: PropsValidated = null;
 
   validate(data: any): boolean {
     const errors = validateSync(data);
