@@ -1,5 +1,5 @@
 import { validate } from "uuid";
-import { InvalidUUIDError } from "../../../errors/invalidUUID.error";
+import { InvalidUUIDError } from "../../errors/invalidUUID.error";
 import { UniqueEntityID } from "../uniqueEntityID";
 
 function spyValidateMethod() {

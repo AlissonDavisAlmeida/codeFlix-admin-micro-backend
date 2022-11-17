@@ -32,7 +32,10 @@
         "@typescript-eslint/no-namespace": "off",
         "no-restricted-syntax": "off",
         "prefer-const": "off",
-        "import/no-cycle": "off"
+        "import/no-cycle": "off",
+        "import/no-extraneous-dependencies": "off",
+        "radix": "off"
+        
     }
  
 }

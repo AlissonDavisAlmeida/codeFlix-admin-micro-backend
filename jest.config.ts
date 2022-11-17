@@ -125,9 +125,9 @@ export default {
 
   // setupFiles: [],
 
-  // setupFilesAfterEnv: [
-  //   "./@seedwork/domain/tests/validations.ts",
-  // ],
+  setupFilesAfterEnv: [
+    "./@seedwork/domain/tests/validations.ts",
+  ],
 
   // slowTestThreshold: 5,
 

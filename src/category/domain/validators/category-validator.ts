@@ -3,7 +3,7 @@ import {
   IsDate,
   IsNotEmpty, IsOptional, IsString, MaxLength,
 } from "class-validator";
-import { ClassValidatorFields } from "../../../@seedwork/validators/class-validator";
+import { ClassValidatorFields } from "../../../@seedwork/domain/validators/class-validator";
 import { CategoryProps } from "../entities/Category";
 
 export class CategoryRules {
