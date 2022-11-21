@@ -53,6 +53,8 @@ export abstract class InMemoryRepository<GenericEntity extends Entity> implement
 export abstract class InMemorySearchableRepository<GenericEntity extends Entity>
   extends InMemoryRepository<GenericEntity>
   implements SearchableRepositoryInterface<GenericEntity> {
+  sortableFields: string[] = [];
+
   async search(params: SearchParams): Promise<SearchResult<GenericEntity>> {
     const itemsFiltered = await this.applyFilter(this.items, params.filter);
     const itemsSorted = await this.applySort(itemsFiltered, params.sort, params.sort_dir);
@@ -71,15 +73,37 @@ export abstract class InMemorySearchableRepository<GenericEntity extends Entity>
 
   protected abstract applyFilter(
     items: GenericEntity[],
-    filter: SearchParams["filter"]): Promise<GenericEntity[]>;
+    filter: string | null): Promise<GenericEntity[]>;
 
-  protected abstract applySort(
+  protected async applySort(
     items: GenericEntity[],
-    sort: SearchParams["sort"],
-    sort_dir: SearchParams["sort_dir"]): Promise<GenericEntity[]>;
+    sort: string | null,
+    sort_dir: string | null,
+  ): Promise<GenericEntity[]> {
+    if (!sort || !this.sortableFields.includes(sort)) {
+      return items;
+    }
+    const newItems = [...items].sort((a, b) => {
+      if (a.props[sort] < b.props[sort]) {
+        return sort_dir === "asc" ? -1 : 1;
+      }
 
-  protected abstract applyPagination(
+      if (a.props[sort] > b.props[sort]) {
+        return sort_dir === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+
+    return newItems;
+  }
+
+  protected async applyPagination(
     items: GenericEntity[],
     page: SearchParams["page"],
-    perPage: SearchParams["per_page"]): Promise<GenericEntity[]>;
+    perPage: SearchParams["per_page"],
+  ): Promise<GenericEntity[]> {
+    const start = (page - 1) * perPage;
+    const limit = start + perPage;
+    return items.slice(start, limit);
+  }
 }
