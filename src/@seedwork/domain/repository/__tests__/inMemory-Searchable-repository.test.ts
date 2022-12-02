@@ -1,5 +1,6 @@
 import { Entity } from "../../entities/Entity";
 import { InMemorySearchableRepository } from "../inMemoryRepository";
+import { SearchParams, SearchResult } from "../repository-contract";
 
 type StubEntityProps = {
   name: string
@@ -124,5 +125,67 @@ describe("InMemorySearchableRepository unit tests", () => {
     });
   });
 
-  describe("search method", () => { });
+  describe("search method", () => {
+    it("should apply only paginate when other params are null", async () => {
+      const entity = new StubEntity({ name: "item 1", price: 10 });
+      const itemsToTests = Array(10).fill(entity);
+
+      repository.items = itemsToTests;
+
+      const result = await repository.search(new SearchParams());
+      expect(result).toStrictEqual(new SearchResult({
+        items: Array(10).fill(entity),
+        total: 10,
+        current_page: 1,
+        per_page: 15,
+        sort: null,
+        sort_dir: null,
+        filter: null,
+      }));
+    });
+
+    it("should apply paginate and filter", async () => {
+      const itemsToTests = [
+        new StubEntity({ name: "item 1", price: 10 }),
+        new StubEntity({ name: "item 2", price: 20 }),
+        new StubEntity({ name: "item 3", price: 30 }),
+        new StubEntity({ name: "a", price: 40 }),
+      ];
+
+      repository.items = itemsToTests;
+
+      let result = await repository.search(new SearchParams({ filter: "item" }));
+      expect(result).toStrictEqual(new SearchResult({
+        items: [itemsToTests[0], itemsToTests[1], itemsToTests[2]],
+        total: 3,
+        current_page: 1,
+        per_page: 15,
+        sort: null,
+        sort_dir: null,
+        filter: "item",
+      }));
+
+      result = await repository.search(new SearchParams({ filter: "item 1", page: 1, per_page: 2 }));
+      expect(result).toStrictEqual(new SearchResult({
+        items: [itemsToTests[0]],
+        total: 1,
+        current_page: 1,
+        per_page: 2,
+        sort: null,
+        sort_dir: null,
+        filter: "item 1",
+      }));
+
+      result = await repository.search(new SearchParams({ filter: "item", page: 2, per_page: 2 }));
+      expect(result).toStrictEqual(new SearchResult({
+        items: [itemsToTests[2]],
+        total: 3,
+        current_page: 2,
+        per_page: 2,
+        sort: null,
+        sort_dir: null,
+        filter: "item",
+      }));
+    });
+  });
 });
