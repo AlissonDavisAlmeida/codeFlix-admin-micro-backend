@@ -48,6 +48,10 @@ export class Category extends Entity<CategoryProps> {
     return this.#created_at;
   }
 
+  private set is_active(is_active: boolean) {
+    this.#is_active = is_active;
+  }
+
   get is_active(): boolean {
     return this.#is_active;
   }
