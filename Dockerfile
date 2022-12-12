@@ -4,7 +4,7 @@ RUN apt update && apt install -y --no-install-recommends \
     git \
     ca-certificates 
 
-USER node
+USER root
 
 WORKDIR /home/node/app
 

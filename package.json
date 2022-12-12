@@ -7,7 +7,7 @@
     "test": "jest --watchAll",
     "ts-node": "ts-node",
     "tsc": "tsc",
-    "tsc:check": "npm run tsc -- --noEmit",
+    "tsc:check": "npx tsc --noEmit",
     "test:cover": "npm run test -- --coverage"
   },
   "keywords": [],

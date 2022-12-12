@@ -1,6 +1,5 @@
 import { SearchInputDTO } from "@seedwork/application/dto/search-input.dto";
 import { PaginationOutputDTO } from "@seedwork/application/dto/pagination-output";
-import { CategoryRepositoryInMemory } from "../../infra/repositories/category-repository-inMemory";
 import { CategoryRepository } from "../../domain/repositories/category-repository";
 import { UseCaseInterface } from "../../../@seedwork/application/useCase";
 
@@ -18,7 +17,7 @@ type ListCategoryOutput = PaginationOutputDTO<CategoryOutput>;
 
 export class ListCategories implements UseCaseInterface<ListCategoriesInput, ListCategoryOutput> {
   constructor(
-    private categoryRepository: CategoryRepositoryInMemory,
+    private categoryRepository: CategoryRepository.Repository,
   ) { }
 
   async execute(input: ListCategoriesInput): Promise<ListCategoryOutput> {
