@@ -1,8 +1,11 @@
-FROM node:14.15.4-slim
+FROM node:16.10.0-slim
 
 RUN apt update && apt install -y --no-install-recommends \
     git \
-    ca-certificates 
+    ca-certificates
+
+
+RUN npm install -g @nestjs/cli@8.2.5     
 
 USER root
 

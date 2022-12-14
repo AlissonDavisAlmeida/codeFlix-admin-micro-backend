@@ -1,5 +1,5 @@
-import { SearchInputDTO } from "@seedwork/application/dto/search-input.dto";
-import { PaginationOutputDTO } from "@seedwork/application/dto/pagination-output";
+import { SearchInputDTO } from "#seedwork/application/dto/search-input.dto";
+import { PaginationOutputDTO } from "#seedwork/application/dto/pagination-output";
 import { CategoryRepository } from "../../domain/repositories/category-repository";
 import { UseCaseInterface } from "../../../@seedwork/application/useCase";
 

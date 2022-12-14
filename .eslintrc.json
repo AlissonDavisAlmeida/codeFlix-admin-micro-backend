@@ -34,7 +34,8 @@
         "prefer-const": "off",
         "import/no-cycle": "off",
         "import/no-extraneous-dependencies": "off",
-        "radix": "off"
+        "radix": "off",
+        "import/extensions": "off"
         
     }
  

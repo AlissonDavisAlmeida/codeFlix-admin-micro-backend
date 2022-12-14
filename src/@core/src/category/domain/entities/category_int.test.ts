@@ -1,5 +1,3 @@
-import { update } from "lodash";
-import { ValidationError } from "../../../@seedwork/domain/errors/Validation-error";
 import { Category } from "./Category";
 
 describe("Category entity integration tests", () => {

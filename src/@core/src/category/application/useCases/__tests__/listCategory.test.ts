@@ -1,5 +1,4 @@
 import { Category } from "../../../domain/entities/Category";
-import { CategoryRepository } from "../../../domain/repositories/category-repository";
 import { CategoryRepositoryInMemory } from "../../../infra/repositories/category-repository-inMemory";
 import { ListCategories } from "../listCategories";
 
