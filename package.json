@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-dev:nestjs": "npm run start:dev -w nestj"
+    "prestart-dev:dev": "npm run build -w micro-videos-core",
+    "start-dev:nestjs": "npm run build:w -w micro-videos-core & npm run start:dev -w nestj",
+    "test": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -21,4 +23,5 @@
     "./src/nestjs"
   ],
   "homepage": "https://github.com/AlissonDavisAlmeida/codeFlix#readme"
+  
 }

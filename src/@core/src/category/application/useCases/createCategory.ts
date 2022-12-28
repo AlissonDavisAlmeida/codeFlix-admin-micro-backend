@@ -1,4 +1,4 @@
-import { UseCaseInterface } from "../../../@seedwork/application/useCase";
+import { UseCaseInterface } from "#seedwork/application/useCase";
 import { CategoryRepository } from "../../domain/repositories/category-repository";
 import { Category } from "../../domain/entities/Category";
 

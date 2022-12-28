@@ -1,9 +1,11 @@
-
-
 export default {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
+  displayName: {
+    name: "@core",
+    color: "blue",
+  },
   // Stop running tests after `n` failures
   // bail: 0,
 
@@ -23,7 +25,8 @@ export default {
 
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: [
-    "/node_modules/"
+    "/node_modules/",
+    "/dist/",
   ],
 
   // Indicates which provider should be used to instrument code for coverage
@@ -160,9 +163,10 @@ export default {
   //   "**/?(*.)+(spec|test).[tj]s?(x)"
   // ],
 
-  // testPathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/dist/"
+  ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   testRegex: [
@@ -191,7 +195,10 @@ export default {
   // Indicates whether each individual test should be reported during the run
   // verbose: undefined,
 
-  // watchPathIgnorePatterns: [],
+  watchPathIgnorePatterns: [
+    "/node_modules/",
+    "/dist/"
+  ],
 
   // Whether to use watchman for file crawling
   // watchman: true,

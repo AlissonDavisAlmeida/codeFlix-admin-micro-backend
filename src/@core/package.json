@@ -3,6 +3,32 @@
   "version": "1.0.0",
   "description": "admin do catalogo de videos",
   "main": "index.js",
+  "exports": {
+    "./category/domain": "./dist/category/domain/index.js",
+    "./category/application": "./dist/category/application/index.js",
+    "./category/infra": "./dist/category/infra/index.js",
+    "./@seedwork/application": "./dist/@seedworks/application/index.js",
+    "./@seedwork/domain": "./dist/@seedworks/domain/index.js"
+  },
+  "typesVersions": {
+    ">=4.0": {
+      "@seedwork/application": [
+        "dist/@seedworks/application/index.d.ts"
+      ],
+      "@seedwork/domain": [
+        "dist/@seedworks/domain/index.d.ts"
+      ],
+      "category/domain": [
+        "dist/category/domain/index.d.ts"
+      ],
+      "category/application": [
+        "dist/category/application/index.d.ts"
+      ],
+      "category/infra": [
+        "dist/category/infra/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "test": "jest --watchAll",
     "ts-node": "ts-node",
