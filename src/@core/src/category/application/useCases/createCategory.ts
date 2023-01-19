@@ -8,7 +8,7 @@ type CreateCategoryInput = {
   is_active?: boolean;
 };
 
-type CreateCategoryOutput = {
+export type CreateCategoryOutput = {
   id: string;
   name: string;
   description: string | null;

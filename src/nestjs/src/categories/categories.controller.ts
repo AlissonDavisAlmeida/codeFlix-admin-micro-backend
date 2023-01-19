@@ -1,42 +1,53 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CreateCategory, ListCategories } from 'micro-videos-core/category/application';
-import { CategoriesService } from './categories.service';
+import { Controller, Get, Post, Body, Param, Delete, Inject, Put, HttpCode, Query } from '@nestjs/common';
+import { CreateCategory, ListCategories, GetCategory, UpdateCategory, DeleteCategory } from 'micro-videos-core/category/application';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { SearchCategoryDto } from './dto/search-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
-  constructor(
-    private readonly categoriesService: CategoriesService,
-    private readonly createUseCase: CreateCategory,
-    private readonly listUseCase: ListCategories
-  ) { }
 
+  @Inject(CreateCategory)
+  private createUseCase: CreateCategory
+
+  @Inject(ListCategories)
+  private readonly listUseCase: ListCategories
+
+  @Inject(GetCategory)
+  private readonly getUseCase: GetCategory
+
+  @Inject(UpdateCategory)
+  private readonly updateUseCase: UpdateCategory
+
+  @Inject(DeleteCategory)
+  private readonly deleteUseCase: DeleteCategory
+
+
+  
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
-    const category = await this.createUseCase.execute(createCategoryDto)
-    return category
-    // return this.categoriesService.create(createCategoryDto);
+    return this.createUseCase.execute(createCategoryDto)
   }
 
 
   @Get()
-  findAll() {
-    return this.listUseCase.execute({})
+  search(@Query() searchParams: SearchCategoryDto) {
+    return this.listUseCase.execute(searchParams)
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.categoriesService.findOne(+id);
+    return this.getUseCase.execute({ id })
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoriesService.update(+id, updateCategoryDto);
+    return this.updateUseCase.execute({ id, ...updateCategoryDto })
   }
 
+  @HttpCode(204)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.categoriesService.remove(+id);
+    return this.deleteUseCase.execute({ id })
   }
 }

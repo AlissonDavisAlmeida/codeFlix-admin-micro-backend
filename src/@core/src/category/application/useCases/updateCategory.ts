@@ -1,14 +1,14 @@
 import { UseCaseInterface } from "../../../@seedwork/application/useCase";
 import { CategoryRepository } from "../../domain/repositories/category-repository";
 
-type UpdateCategoryInput = {
+export type UpdateCategoryInput = {
   id: string
   name: string
   description?: string
   is_active?: boolean
 };
 
-type UpdateCategoryOutput = {
+export type UpdateCategoryOutput = {
   id: string;
   name: string;
   description: string;

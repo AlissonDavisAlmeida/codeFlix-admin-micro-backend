@@ -3,7 +3,7 @@ import { PaginationOutputDTO } from "#seedwork/application/dto/pagination-output
 import { CategoryRepository } from "../../domain/repositories/category-repository";
 import { UseCaseInterface } from "../../../@seedwork/application/useCase";
 
-type ListCategoriesInput = SearchInputDTO<CategoryRepository.Filter>;
+export type ListCategoriesInput = SearchInputDTO<CategoryRepository.Filter>;
 
 type CategoryOutput = {
   id: string;
@@ -13,7 +13,7 @@ type CategoryOutput = {
   is_active?: boolean
 };
 
-type ListCategoryOutput = PaginationOutputDTO<CategoryOutput>;
+export type ListCategoryOutput = PaginationOutputDTO<CategoryOutput>;
 
 export class ListCategories implements UseCaseInterface<ListCategoriesInput, ListCategoryOutput> {
   constructor(

@@ -1,9 +1,22 @@
-# POST http://localhost:3000/categories
-# Content-Type: application/json
+POST http://localhost:3000/categories
+Content-Type: application/json
 
-# {
-#   "name": "New Category",
-#   "description": "New Category Description"
-# }
+{
+  "name": "New Category",
+  "description": "New Category Description"
+}
 
+###
 GET http://localhost:3000/categories
+
+###
+GET http://localhost:3000/categories/b7a85c8a-feff-44f2-93e1-82e1603eb089
+
+###
+PUT http://localhost:3000/categories/b7a85c8a-feff-44f2-93e1-82e1603eb089
+Content-Type: application/json
+
+{
+  "name": "New Category Updated",
+  "description": "New Category Description"
+}

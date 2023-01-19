@@ -1,11 +1,11 @@
 import { UseCaseInterface } from "../../../@seedwork/application/useCase";
 import { CategoryRepository } from "../../domain/repositories/category-repository";
 
-export type GetCategoryInput = {
+type DeleteCategoryInput = {
   id: string
 };
 
-export type GetCategoryOutput = {
+type DeleteCategoryOutput = {
   id: string;
   name: string;
   description: string | null;
@@ -13,14 +13,12 @@ export type GetCategoryOutput = {
   created_at: Date;
 };
 
-export class GetCategory implements UseCaseInterface<GetCategoryInput, GetCategoryOutput> {
+export class DeleteCategory implements UseCaseInterface<DeleteCategoryInput, any> {
   constructor(
     private categoryRepository: CategoryRepository.Repository,
   ) { }
 
-  async execute(input: GetCategoryInput): Promise<GetCategoryOutput> {
-    const category = await this.categoryRepository.findById(input.id);
-
-    return category;
+  async execute(input: DeleteCategoryInput): Promise<void> {
+    await this.categoryRepository.delete(input.id);
   }
 }
