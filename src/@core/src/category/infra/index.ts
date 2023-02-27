@@ -1,1 +1,1 @@
-export * from "./repositories/category-repository-inMemory";
+export * from "./db/in-memory/category-repository-inMemory";
