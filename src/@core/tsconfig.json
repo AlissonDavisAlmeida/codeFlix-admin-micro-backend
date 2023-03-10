@@ -7,7 +7,7 @@
         "./@seedwork/*"
       ],
       "#category/*": [
-        "./@category/*"
+        "./category/*"
       ],
     },
     "outDir": "./dist",

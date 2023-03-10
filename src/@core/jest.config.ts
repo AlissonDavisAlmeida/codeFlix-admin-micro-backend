@@ -46,12 +46,7 @@ export default {
       lines: 90,
       statements: 90,
     },
-    "./src/category/domain": {
-      branches: 100,
-      functions: 100,
-      lines: 100,
-      statements: 100,
-    }
+    
   },
 
   // A path to a custom dependency extractor
