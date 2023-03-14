@@ -2,6 +2,7 @@ export * from "./entities/Entity";
 export * from "./errors/Validation-error";
 export * from "./errors/invalidUUID.error";
 export * from "./errors/not-found.error";
+export * from "./errors/loading-entity.error";
 export * from "./repository/inMemoryRepository";
 export * from "./repository/repository-contract";
 export * from "./utils/object";
