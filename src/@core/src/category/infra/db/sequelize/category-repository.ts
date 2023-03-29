@@ -35,7 +35,8 @@ export class CategorySequelizeRepository implements CategoryRepository.Repositor
   }
 
   async findAll(): Promise<Category[]> {
-    throw new Error("Method not implemented.");
+    const models = await this.categoryModel.findAll();
+    return models.map(CategoryMapper.toEntity);
   }
 
   private async _get(id: string): Promise<Category> {

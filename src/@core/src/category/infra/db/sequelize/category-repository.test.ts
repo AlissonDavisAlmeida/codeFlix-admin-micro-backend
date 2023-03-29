@@ -12,7 +12,6 @@ describe("Sequelize - Category repository unit tests", () => {
     sequelize = new Sequelize({
       dialect: "sqlite",
       host: ":memory:",
-      //   storage: ":memory:",
       models: [CategoryModel],
       logging: false,
     });
@@ -66,5 +65,18 @@ describe("Sequelize - Category repository unit tests", () => {
 
     entityFound = await repository.findById(stubEntity.uniqueEntityId);
     expect(entityFound.toJSON()).toStrictEqual(stubEntity.toJSON());
+  });
+
+  it("should finds all entities", async () => {
+    const entity = new Category({
+      name: "Movie 1", created_at: new Date(), is_active: true, description: null,
+    });
+
+    await repository.create(entity);
+
+    const entitiesFound = await repository.findAll();
+
+    expect(entitiesFound).toHaveLength(1);
+    expect(entitiesFound[0].toJSON()).toStrictEqual(entity.toJSON());
   });
 });
