@@ -79,4 +79,11 @@ describe("Sequelize - Category repository unit tests", () => {
     expect(entitiesFound).toHaveLength(1);
     expect(entitiesFound[0].toJSON()).toStrictEqual(entity.toJSON());
   });
+
+  it("search", async () => {
+    await CategoryModel.factory().create();
+
+    const categories = await repository.findAll();
+    console.log(categories);
+  });
 });
