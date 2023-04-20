@@ -4,29 +4,13 @@ import { CategoryMapper } from "./category-mapper";
 import CategoryModel from "./category-model";
 import { LoadingEntityError } from "#seedwork/domain";
 import { Category } from "#category/domain";
+import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 
 describe("CategoryMapper unit tests", () => {
-  let sequelize: Sequelize;
-
-  beforeAll(() => {
-    sequelize = new Sequelize({
-      dialect: "sqlite",
-      host: ":memory:",
-      logging: false,
-      models: [CategoryModel],
-    });
-  });
-
-  beforeEach(async () => {
-    await sequelize.sync({ force: true });
-  });
+  setupSequelize({ models: [CategoryModel] });
 
   afterEach(() => {
     jest.restoreAllMocks();
-  });
-
-  afterAll(async () => {
-    await sequelize.close();
   });
 
   it("should throws error when category is invalid", () => {

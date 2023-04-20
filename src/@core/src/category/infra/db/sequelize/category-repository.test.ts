@@ -1,29 +1,16 @@
-import { Sequelize } from "sequelize-typescript";
 import { NotFoundError, UniqueEntityID } from "#seedwork/domain";
 import { Category } from "../../../domain";
 import CategoryModel from "./category-model";
 import { CategorySequelizeRepository } from "./category-repository";
+import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 
 describe("Sequelize - Category repository unit tests", () => {
-  let sequelize: Sequelize;
   let repository: CategorySequelizeRepository;
 
-  beforeAll(async () => {
-    sequelize = new Sequelize({
-      dialect: "sqlite",
-      host: ":memory:",
-      models: [CategoryModel],
-      logging: false,
-    });
-  });
+  setupSequelize({ models: [CategoryModel] });
 
   beforeEach(async () => {
     repository = new CategorySequelizeRepository(CategoryModel);
-    await sequelize.sync({ force: true });
-  });
-
-  afterAll(async () => {
-    await sequelize.close();
   });
 
   it("should insert a new Entity", async () => {
@@ -84,6 +71,5 @@ describe("Sequelize - Category repository unit tests", () => {
     await CategoryModel.factory().create();
 
     const categories = await repository.findAll();
-    console.log(categories);
   });
 });
