@@ -1,4 +1,3 @@
-import { Sequelize } from "sequelize-typescript";
 import { randomUUID } from "crypto";
 import { CategoryMapper } from "./category-mapper";
 import CategoryModel from "./category-model";

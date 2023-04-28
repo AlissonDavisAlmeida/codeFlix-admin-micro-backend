@@ -54,4 +54,26 @@ describe("SequelizeModelFactory - repository unit tests", () => {
 
     expect(StubModel.mockFactory).toHaveBeenCalledTimes(1);
   });
+  test("make method", async () => {
+    let model = await StubModel.factory().make();
+
+    expect(validate(model.id)).toBeTruthy();
+    expect(model.name).not.toBeNull();
+    expect(StubModel.mockFactory).toBeCalledTimes(1);
+
+    model = StubModel.factory().make({
+      id: "d7c7a8d6-7c6b-4e1f-9b2e-5b7c9f9d1e2f",
+      name: "Test",
+    });
+
+    expect(model.id).toBe("d7c7a8d6-7c6b-4e1f-9b2e-5b7c9f9d1e2f");
+    expect(model.name).toBe("Test");
+
+    expect(StubModel.mockFactory).toHaveBeenCalledTimes(1);
+  });
+
+  test("bulkCreate method using count = 1", async () => {
+    let models = await StubModel.factory().bulkCreate();
+    expect(models).toHaveLength(1);
+  });
 });

@@ -25,6 +25,8 @@ export function setupSequelize(options: SequelizeOptions) {
   });
 
   return {
-    sequelize,
+    get sequelize() {
+      return sequelize;
+    },
   };
 }
