@@ -27,7 +27,11 @@ export class SequelizeModelFactory {
     return this.model.bulkCreate(data);
   }
 
-  async bulkMake() {
+  async bulkMake(factoryProps?: (index: number) => unknown) {
+    const data = new Array(this.#count)
+      .fill(factoryProps || this.factoryProps)
+      .map((factory, index) => factory(index));
 
+    return this.model.bulkBuild(data);
   }
 }
