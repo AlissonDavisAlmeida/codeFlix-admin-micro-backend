@@ -50,7 +50,7 @@ export default class CategoryModel extends Model<CategoryModelProps> {
     // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
     const chance: Chance.Chance = require("chance")();
 
-    return new SequelizeModelFactory(this, () => ({
+    return new SequelizeModelFactory<CategoryModel>(this, () => ({
       id: chance.guid({ version: 4 }),
       name: chance.name({ full: true }),
       description: chance.sentence({ words: 10 }),

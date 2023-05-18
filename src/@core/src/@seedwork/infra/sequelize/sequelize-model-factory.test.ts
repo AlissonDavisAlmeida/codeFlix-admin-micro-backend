@@ -8,8 +8,13 @@ import { setupSequelize } from "../testing/helpers/db";
 
 const chanceFake = chance();
 
+type ModelProps = {
+  id: string,
+  name: string,
+};
+
 @Table({})
-class StubModel extends Model<{ id: string, name: string }> {
+class StubModel extends Model<ModelProps> {
   @PrimaryKey
   @Column({ type: DataType.UUIDV4 })
   declare id: string;
@@ -24,7 +29,7 @@ class StubModel extends Model<{ id: string, name: string }> {
   }));
 
   static factory() {
-    return new SequelizeModelFactory(this, StubModel.mockFactory);
+    return new SequelizeModelFactory<StubModel, ModelProps>(this, StubModel.mockFactory);
   }
 }
 
