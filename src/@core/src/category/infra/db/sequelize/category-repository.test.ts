@@ -130,7 +130,130 @@ describe("Sequelize - Category repository unit tests", () => {
 
       const result = await repository.search(new CategoryRepository.SearchParams());
 
-      expect(result).toBeInstanceOf(CategoryRepository.SearchResults);
+      result.items.reverse().forEach((item, index) => {
+        expect(item).toBeInstanceOf(Category);
+        expect(`${item.name}`).toBe(`Movie-${index + 1}`);
+      });
+    });
+
+    it("should apply paginate and filter", async () => {
+      const defaultProps = {
+        description: null,
+        is_active: true,
+        created_at: new Date(),
+      };
+
+      const categoriesProp = [
+        { id: change.guid({ version: 4 }), name: "test", ...defaultProps },
+        { id: change.guid({ version: 4 }), name: "a", ...defaultProps },
+        { id: change.guid({ version: 4 }), name: "TEST", ...defaultProps },
+        { id: change.guid({ version: 4 }), name: "TeSt", ...defaultProps },
+      ];
+
+      const categories = await CategoryModel.bulkCreate(categoriesProp);
+
+      let result = await repository.search(new CategoryRepository.SearchParams({
+        page: 1,
+        per_page: 2,
+        filter: "TEST",
+      }));
+
+      expect(result.toJSON(true)).toMatchObject(new CategoryRepository.SearchResults({
+        items: [categories[0], categories[2]].map(CategoryMapper.toEntity),
+        current_page: 1,
+        per_page: 2,
+        total: 3,
+        sort: null,
+        sort_dir: null,
+        filter: "TEST",
+      }).toJSON(true));
+
+      result = await repository.search(new CategoryRepository.SearchParams({
+        page: 2,
+        per_page: 2,
+        filter: "TEST",
+      }));
+
+      expect(result.toJSON(true)).toMatchObject(new CategoryRepository.SearchResults({
+        items: [categories[3]].map(CategoryMapper.toEntity),
+        current_page: 2,
+        per_page: 2,
+        total: 3,
+        sort: null,
+        sort_dir: null,
+        filter: "TEST",
+      }).toJSON(true));
+    });
+
+    it("should apply paginate and sort", async () => {
+      expect(repository.sortableFields).toStrictEqual(["name", "created_at"]);
+
+      const defaultProps = {
+        description: null,
+        is_active: true,
+      };
+
+      const categoriesProp = [
+        { id: change.guid({ version: 4 }), name: "b", ...({ ...defaultProps, created_at: new Date("2020/10/01") }) },
+        { id: change.guid({ version: 4 }), name: "a", ...({ ...defaultProps, created_at: new Date("2020/10/02") }) },
+        { id: change.guid({ version: 4 }), name: "c", ...({ ...defaultProps, created_at: new Date("2020/10/03") }) },
+        { id: change.guid({ version: 4 }), name: "d", ...({ ...defaultProps, created_at: new Date("2020/10/04") }) },
+      ];
+
+      const categories = await CategoryModel.bulkCreate(categoriesProp);
+
+      let result = await repository.search(new CategoryRepository.SearchParams({
+        page: 1,
+        per_page: 2,
+        sort: "name",
+        sort_dir: "asc",
+
+      }));
+
+      expect(result.toJSON(true)).toMatchObject(new CategoryRepository.SearchResults({
+        items: [categories[1], categories[0]].map(CategoryMapper.toEntity),
+        current_page: 1,
+        per_page: 2,
+        total: 4,
+        sort: "name",
+        sort_dir: "asc",
+        filter: null,
+
+      }).toJSON(true));
+
+      result = await repository.search(new CategoryRepository.SearchParams({
+        page: 2,
+        per_page: 2,
+        sort: "name",
+        sort_dir: "asc",
+      }));
+
+      expect(result.toJSON(true)).toMatchObject(new CategoryRepository.SearchResults({
+        items: [categories[2], categories[3]].map(CategoryMapper.toEntity),
+        current_page: 2,
+        per_page: 2,
+        total: 4,
+        sort: "name",
+        sort_dir: "asc",
+        filter: null,
+      }).toJSON(true));
+
+      result = await repository.search(new CategoryRepository.SearchParams({
+        page: 1,
+        per_page: 2,
+        sort: "is_active",
+        sort_dir: "desc",
+      }));
+
+      expect(result.toJSON(true)).toMatchObject(new CategoryRepository.SearchResults({
+        items: [categories[3], categories[2]].map(CategoryMapper.toEntity),
+        current_page: 1,
+        per_page: 2,
+        total: 4,
+        sort: "is_active",
+        sort_dir: "desc",
+        filter: null,
+      }).toJSON(true));
     });
   });
 });

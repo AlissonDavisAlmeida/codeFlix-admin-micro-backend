@@ -66,7 +66,6 @@ export class CategorySequelizeRepository implements CategoryRepository.Repositor
       offset,
       limit,
     });
-
     return new CategoryRepository.SearchResults({
       items: models.map(CategoryMapper.toEntity),
       current_page: params.page,
