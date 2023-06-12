@@ -40,7 +40,8 @@
         "import/no-cycle": "off",
         "import/no-extraneous-dependencies": "off",
         "radix": "off",
-        "import/extensions": "off"
+        "import/extensions": "off",
+        "no-await-in-loop": "off"
     },
     "ignorePatterns": [
         "jest.config.ts",

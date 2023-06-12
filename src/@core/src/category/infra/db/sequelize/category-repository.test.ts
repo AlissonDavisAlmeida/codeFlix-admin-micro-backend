@@ -255,5 +255,75 @@ describe("Sequelize - Category repository unit tests", () => {
         filter: null,
       }).toJSON(true));
     });
+
+    it("should apply paginate, filter and sort", async () => {
+      const defaultProps = {
+        description: null,
+        is_active: true,
+      };
+
+      const categoriesProp = [
+
+        {
+          id: change.guid({ version: 4 }), name: "test", ...defaultProps, created_at: new Date("2020/10/01"),
+        },
+        {
+          id: change.guid({ version: 4 }), name: "a", ...defaultProps, created_at: new Date("2020/10/02"),
+        },
+        {
+          id: change.guid({ version: 4 }), name: "TEST", ...defaultProps, created_at: new Date("2020/10/03"),
+        },
+        {
+          id: change.guid({ version: 4 }), name: "TeSt", ...defaultProps, created_at: new Date("2020/10/04"),
+        },
+        {
+          id: change.guid({ version: 4 }), name: "e", ...defaultProps, created_at: new Date("2020/10/05"),
+        },
+      ];
+
+      const categories = await CategoryModel.bulkCreate(categoriesProp);
+
+      const arrange = [{
+
+        params: new CategoryRepository.SearchParams({
+          page: 1,
+          per_page: 2,
+          sort: "name",
+          filter: "TEST",
+        }),
+        result: new CategoryRepository.SearchResults({
+          items: [categories[2], categories[3]].map(CategoryMapper.toEntity),
+          current_page: 1,
+          per_page: 2,
+          total: 3,
+          sort: "name",
+          sort_dir: "asc",
+          filter: "TEST",
+        }),
+      },
+      {
+        params: new CategoryRepository.SearchParams({
+          page: 2,
+          per_page: 2,
+          sort: "name",
+          filter: "TEST",
+        }),
+        result: new CategoryRepository.SearchResults({
+          items: [categories[0]].map(CategoryMapper.toEntity),
+          current_page: 2,
+          per_page: 2,
+          total: 3,
+          sort: "name",
+          sort_dir: "asc",
+          filter: "TEST",
+        }),
+      },
+      ];
+
+      for (const { params, result } of arrange) {
+        const actual = await repository.search(params);
+        expect(actual.toJSON(true)).toMatchObject(result.toJSON(true));
+      }
+    });
   });
 });

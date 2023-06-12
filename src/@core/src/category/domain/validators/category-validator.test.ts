@@ -32,25 +32,27 @@ describe("Category Validator tests", () => {
     );
   });
 
-  test("validation cases for fields", () => {
-    let isValid = validator.validate({ name: "name" });
-    expect(isValid).toBeTruthy();
-    expect(validator.validatedData).toStrictEqual(new CategoryRules({ name: "name" }));
+  describe("valid cases for fields", () => {
+    type Arrange = {
+      name: string;
+      description?: string;
+      is_active?: boolean;
+    };
 
-    isValid = validator.validate({ name: "name", description: undefined });
-    expect(isValid).toBeTruthy();
-    expect(validator.validatedData).toStrictEqual(new CategoryRules({ name: "name", description: undefined }));
-
-    isValid = validator.validate({ name: "name", description: null });
-    expect(isValid).toBeTruthy();
-    expect(validator.validatedData).toStrictEqual(new CategoryRules({ name: "name", description: null }));
-
-    isValid = validator.validate({ name: "name", is_active: true });
-    expect(isValid).toBeTruthy();
-    expect(validator.validatedData).toStrictEqual(new CategoryRules({ name: "name", is_active: true }));
-
-    isValid = validator.validate({ name: "name", is_active: false });
-    expect(isValid).toBeTruthy();
-    expect(validator.validatedData).toStrictEqual(new CategoryRules({ name: "name", is_active: false }));
+    const arrange: Arrange[] = [
+      { name: "some value" },
+      {
+        name: "some value",
+        description: undefined,
+      },
+      { name: "some value", description: null },
+      { name: "some value", is_active: true },
+      { name: "some value", is_active: false },
+    ];
+    test.each(arrange)("validate %o", (values) => {
+      let isValid = validator.validate(values);
+      expect(isValid).toBeTruthy();
+      expect(validator.validatedData).toStrictEqual(new CategoryRules(values));
+    });
   });
 });
