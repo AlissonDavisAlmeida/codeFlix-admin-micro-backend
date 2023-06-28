@@ -187,5 +187,79 @@ describe("InMemorySearchableRepository unit tests", () => {
         filter: "item",
       }));
     });
+
+    describe("should apply paginate and sort", () => {
+      const items = [
+        new StubEntity({ name: "b", price: 5 }),
+        new StubEntity({ name: "a", price: 10 }),
+        new StubEntity({ name: "d", price: 15 }),
+        new StubEntity({ name: "e", price: 25 }),
+        new StubEntity({ name: "c", price: 20 }),
+      ];
+
+      beforeEach(() => {
+        repository.items = items;
+      });
+
+      const arrange = [
+        {
+          search_params: new SearchParams({ sort: "name", page: 1, per_page: 2 }),
+          search_result: new SearchResult({
+            items: [items[1], items[0]],
+            total: 5,
+            current_page: 1,
+            per_page: 2,
+            sort: "name",
+            sort_dir: "asc",
+            filter: null,
+          }),
+        },
+        {
+          search_params: new SearchParams({ sort: "name", page: 2, per_page: 2 }),
+          search_result: new SearchResult({
+            items: [items[4], items[2]],
+            total: 5,
+            current_page: 2,
+            per_page: 2,
+            sort: "name",
+            sort_dir: "asc",
+            filter: null,
+          }),
+        },
+        {
+          search_params: new SearchParams({
+            sort: "name", page: 1, per_page: 2, sort_dir: "desc",
+          }),
+          search_result: new SearchResult({
+            items: [items[3], items[2]],
+            total: 5,
+            current_page: 1,
+            per_page: 2,
+            sort: "name",
+            sort_dir: "desc",
+            filter: null,
+          }),
+        },
+        {
+          search_params: new SearchParams({
+            sort: "name", page: 2, per_page: 2, sort_dir: "desc",
+          }),
+          search_result: new SearchResult({
+            items: [items[4], items[0]],
+            total: 5,
+            current_page: 2,
+            per_page: 2,
+            sort: "name",
+            sort_dir: "desc",
+            filter: null,
+          }),
+        },
+      ];
+
+      test.each(arrange)("when value is %j", async ({ search_params, search_result }) => {
+        const result = await repository.search(search_params);
+        expect(result).toStrictEqual(search_result);
+      });
+    });
   });
 });
