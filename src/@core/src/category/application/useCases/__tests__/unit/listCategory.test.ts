@@ -1,6 +1,6 @@
-import { Category } from "../../../domain/entities/Category";
-import { CategoryRepositoryInMemory } from "../../../infra/repositories/category-repository-inMemory";
-import { ListCategories } from "../listCategories";
+import { ListCategories } from "#category/application";
+import { Category } from "#category/domain";
+import { CategoryRepositoryInMemory } from "#category/infra";
 
 describe("List Categories use case test", () => {
   let useCase: ListCategories;

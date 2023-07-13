@@ -68,6 +68,65 @@ describe("Sequelize - Category repository unit tests", () => {
     expect(entitiesFound[0].toJSON()).toStrictEqual(entity.toJSON());
   });
 
+  it("should throw error on update when entity not found", async () => {
+    const entity = new Category({
+      name: "Movie 1",
+      is_active: true,
+      created_at: new Date(),
+    });
+
+    await expect(repository.update(entity)).rejects.toThrow(
+      new NotFoundError(`Entity not found using id: ${entity.id}`),
+    );
+  });
+
+  it("should update a entity", async () => {
+    const entity = new Category({
+      name: "Movie 1",
+      is_active: true,
+      created_at: new Date(),
+      description: null,
+    });
+
+    await repository.create(entity);
+
+    entity.update("Movie 2", entity.description);
+    await repository.update(entity);
+
+    const entityFound = await repository.findById(entity.id);
+
+    expect(entity.toJSON()).toStrictEqual(entityFound.toJSON());
+  });
+
+  it("should throw error on delete when entity not found", async () => {
+    const entity = new Category({
+      name: "Movie 1",
+      is_active: true,
+      created_at: new Date(),
+    });
+
+    await expect(repository.delete(entity.id)).rejects.toThrow(
+      new NotFoundError(`Entity not found using id: ${entity.id}`),
+    );
+  });
+
+  it("should delete a entity", async () => {
+    const entity = new Category({
+      name: "Movie 1",
+      is_active: true,
+      created_at: new Date(),
+      description: null,
+    });
+
+    await repository.create(entity);
+
+    await repository.delete(entity.id);
+
+    const entityFound = await CategorySequelize.CategoryModel.findByPk(entity.id);
+
+    expect(entityFound).toBeNull();
+  });
+
   describe("search method tests", () => {
     it("should only apply paginate when other params are null", async () => {
       const created_at = new Date();

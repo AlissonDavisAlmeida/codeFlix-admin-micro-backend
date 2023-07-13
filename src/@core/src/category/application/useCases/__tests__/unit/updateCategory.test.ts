@@ -1,6 +1,6 @@
-import { Category } from "../../../domain/entities/Category";
-import { CategoryRepositoryInMemory } from "../../../infra/repositories/category-repository-inMemory";
-import { UpdateCategory } from "../updateCategory";
+import { UpdateCategory } from "#category/application";
+import { CategoryRepositoryInMemory } from "#category/infra";
+import { Category } from "../../../../domain/entities/Category";
 
 describe("Update Category use case", () => {
   let useCase: UpdateCategory;
