@@ -35,7 +35,7 @@ export class ListCategories implements UseCaseInterface<ListCategoriesInput, Lis
         name: item.name,
         description: item.description,
         created_at: item.created_at,
-        // is_active:q item.is_active,
+        is_active: item.is_active,
       })),
     };
   }

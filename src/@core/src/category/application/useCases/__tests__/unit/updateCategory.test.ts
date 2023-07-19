@@ -12,7 +12,7 @@ describe("Update Category use case", () => {
   });
 
   it("should throws error when entity not found", async () => {
-    expect(() => useCase.execute({ id: "123", name: "Category Test" })).rejects.toThrowError("Entity not found using id: 123");
+    await expect(() => useCase.execute({ id: "123", name: "Category Test" })).rejects.toThrowError("Entity not found using id: 123");
   });
 
   it("should update a category", async () => {

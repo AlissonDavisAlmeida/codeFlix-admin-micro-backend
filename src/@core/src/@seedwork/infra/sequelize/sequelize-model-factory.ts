@@ -29,7 +29,7 @@ export class SequelizeModelFactory<ModelClass extends Model, ModelProps = unknow
     return this.model.bulkCreate(data);
   }
 
-  async bulkMake(factoryProps?: (index: number) => ModelProps): Promise<ModelClass> {
+  async bulkMake(factoryProps?: (index: number) => ModelProps): Promise<ModelClass[]> {
     const data = new Array(this.#count)
       .fill(factoryProps || this.factoryProps)
       .map((factory, index) => factory(index));

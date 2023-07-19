@@ -13,7 +13,7 @@ describe("Get Category use case tests", () => {
   });
 
   it("should throw Not Found when id not exists", async () => {
-    expect(async () => useCase.execute({ id: "1" })).rejects.toThrowError(
+    await expect(async () => useCase.execute({ id: "1" })).rejects.toThrowError(
       new NotFoundError("Entity not found using id: 1"),
     );
   });

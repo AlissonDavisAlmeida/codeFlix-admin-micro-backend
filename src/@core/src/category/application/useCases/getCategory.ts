@@ -21,6 +21,12 @@ export class GetCategory implements UseCaseInterface<GetCategoryInput, GetCatego
   async execute(input: GetCategoryInput): Promise<GetCategoryOutput> {
     const category = await this.categoryRepository.findById(input.id);
 
-    return category;
+    return {
+      id: category.id,
+      name: category.name,
+      description: category.description,
+      is_active: category.is_active,
+      created_at: category.created_at,
+    };
   }
 }
