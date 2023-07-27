@@ -1,5 +1,4 @@
 import _chance from "chance";
-import { Category } from "#category/domain";
 import { CategorySequelize } from "#category/infra/db/sequelize/category-sequelize";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 import { ListCategories } from "../../listCategories";

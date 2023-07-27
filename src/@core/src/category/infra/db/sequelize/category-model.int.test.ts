@@ -57,7 +57,7 @@ describe("CategoryModel unit tests", () => {
     const createdAtAttr = attributes.created_at;
 
     expect(createdAtAttr).toMatchObject({
-      allowNull: false,
+      allowNull: true,
       field: "created_at",
       fieldName: "created_at",
       type: DataType.DATE(),

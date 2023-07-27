@@ -37,7 +37,7 @@ describe("Get Category use case tests", () => {
 
     const result = await useCase.execute({ id: items[0].id });
 
-    expect(result).toStrictEqual(items[0]);
+    expect(result).toStrictEqual(items[0].toJSON());
     expect(spyFindById).toBeCalledTimes(1);
   });
 });
