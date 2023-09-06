@@ -1,19 +1,7 @@
 import { config as readEnv } from "dotenv";
 import { join } from "path";
 
-const envPath = join(__dirname, "../../../../.env");
-
-readEnv({
-  path: envPath,
-});
-
-export const config: ConfigType = {
-  db: {
-    connection: process.env.DB_CONNECTION || "sqlite",
-    host: process.env.DB_HOST || ":memory:",
-    logging: process.env.DB_LOGGING === "true",
-  },
-};
+const envTestingPath = join(__dirname, "../../../../.env");
 
 type ConfigType = {
   db: {
@@ -22,3 +10,19 @@ type ConfigType = {
     logging: boolean;
   }
 };
+
+function makeConfig(envFile): ConfigType {
+  const output = readEnv({
+    path: envFile,
+  });
+
+  return {
+    db: {
+      connection: output.parsed.DB_CONNECTION || "sqlite",
+      host: output.parsed.DB_HOST || ":memory:",
+      logging: output.parsed.DB_LOGGING === "true",
+    },
+  };
+}
+
+export const config = makeConfig(envTestingPath);
