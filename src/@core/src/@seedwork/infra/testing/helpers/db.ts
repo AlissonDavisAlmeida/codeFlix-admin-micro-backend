@@ -32,3 +32,7 @@ export function setupSequelize(options: SequelizeOptions) {
     },
   };
 }
+
+// function makeSequelizeOptions(configEnv: ConfigType) {
+
+// }

@@ -1,9 +1,9 @@
 import { config as readEnv } from "dotenv";
 import { join } from "path";
 
-const envTestingPath = join(__dirname, "../../../../.env");
+const envTestingPath = join(__dirname, "../../../../.env.testing");
 
-type ConfigType = {
+export type ConfigType = {
   db: {
     connection: string;
     host: string;
