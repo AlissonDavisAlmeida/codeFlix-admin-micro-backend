@@ -36,7 +36,8 @@
 				"oderwat.indent-rainbow",
 				"PKief.material-icon-theme",
 				"vscode-icons-team.vscode-icons",
-				"github.copilot"		
+				"github.copilot",
+				"firsttris.vscode-jest-runner"		
 		
 			]
 		}
