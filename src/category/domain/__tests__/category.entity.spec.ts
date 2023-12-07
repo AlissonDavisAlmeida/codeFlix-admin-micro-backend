@@ -1,3 +1,4 @@
+import { Uuid } from "../../../shared/domain/value-objects/uuid.vo"
 import { Category } from "../category.entity"
 
 describe("Category unit tests", () => {
@@ -7,7 +8,7 @@ describe("Category unit tests", () => {
             name: "Category 1",
         })
 
-        expect(category.category_id).toBeUndefined()
+        expect(category.category_id).toBeDefined()
         expect(category.name).toBe("Category 1")
         expect(category.description).toBeNull()
         expect(category.is_active).toBeTruthy()
@@ -22,7 +23,7 @@ describe("Category unit tests", () => {
             created_at
         })
 
-        expect(category.category_id).toBeUndefined()
+        expect(category.category_id).toBeDefined()
         expect(category.name).toBe("Category 1")
         expect(category.description).toBe("Category 1 description")
         expect(category.is_active).toBeFalsy()
@@ -35,7 +36,8 @@ describe("Category unit tests", () => {
                 name: "Category 1"
             })
 
-            expect(category.category_id).toBeUndefined()
+            expect(category.category_id).toBeDefined()
+            expect(category.category_id).toBeInstanceOf(Uuid)
             expect(category.name).toBe("Category 1")
             expect(category.description).toBeNull()
             expect(category.is_active).toBeTruthy()
@@ -48,7 +50,8 @@ describe("Category unit tests", () => {
                 description: "Category 1 description"
             })
 
-            expect(category.category_id).toBeUndefined()
+            expect(category.category_id).toBeDefined()
+            expect(category.category_id).toBeInstanceOf(Uuid)
             expect(category.name).toBe("Category 1")
             expect(category.description).toBe("Category 1 description")
             expect(category.is_active).toBeTruthy()
@@ -62,14 +65,15 @@ describe("Category unit tests", () => {
                 is_active: false
             })
 
-            expect(category.category_id).toBeUndefined()
+            expect(category.category_id).toBeDefined()
+            expect(category.category_id).toBeInstanceOf(Uuid)
             expect(category.name).toBe("Category 1")
             expect(category.description).toBe("Category 1 description")
             expect(category.is_active).toBeFalsy()
             expect(category.created_at).toBeInstanceOf(Date)
         })
 
-        test("should change name",()=>{
+        test("should change name", () => {
             const category = Category.create({
                 name: "Category 1",
                 description: "Category 1 description",
@@ -81,7 +85,7 @@ describe("Category unit tests", () => {
             expect(category.name).toBe("Category 2")
         })
 
-        test("should change description",()=>{
+        test("should change description", () => {
             const category = Category.create({
                 name: "Category 1",
                 description: "Category 1 description",
@@ -93,7 +97,7 @@ describe("Category unit tests", () => {
             expect(category.description).toBe("Category 2 description")
         })
 
-        test("should activate",()=>{
+        test("should activate", () => {
             const category = Category.create({
                 name: "Category 1",
                 description: "Category 1 description",
@@ -105,7 +109,7 @@ describe("Category unit tests", () => {
             expect(category.is_active).toBeTruthy()
         })
 
-        test("should deactivate",()=>{
+        test("should deactivate", () => {
             const category = Category.create({
                 name: "Category 1",
                 description: "Category 1 description",
@@ -117,6 +121,24 @@ describe("Category unit tests", () => {
             expect(category.is_active).toBeFalsy()
         })
 
-        
+        describe("category_id field", () => {
+            const arrange = [
+                { category_id: null },
+                { category_id: undefined },
+                { category_id: new Uuid() }
+            ]
+
+            test.each(arrange)("id=%j", ({ category_id }) => {
+                const category = new Category({
+                    name: "Category 1",
+                    category_id: category_id as any
+                })
+
+                expect(category.category_id).toBeInstanceOf(Uuid)
+
+            })
+        })
+
+
     })
 })

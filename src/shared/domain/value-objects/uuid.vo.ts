@@ -1,4 +1,4 @@
-import { ValueObject } from "../../../shared/domain/value-object";
+import { ValueObject } from "../value-object";
 import { v4 as uuidV4, validate as uuidValidate } from "uuid"
 
 export class Uuid extends ValueObject {
@@ -7,6 +7,7 @@ export class Uuid extends ValueObject {
     constructor(id?: string) {
         super()
         this.id = id || this.generateUuid()
+        this.validateUuid()
     }
 
     private generateUuid(): string {
