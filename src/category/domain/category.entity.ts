@@ -1,4 +1,5 @@
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
+import { CategoryValidatorFactory } from "./category.validator";
 
 export type CategoryConstructorProps = {
     category_id?: Uuid;
@@ -32,15 +33,28 @@ export class Category {
 
     static create(props: CategoryCreateCommand): Category {
         const category = new Category(props);
+
+        Category.validate(category);
+
         return category;
+    }
+
+    static validate(entity: Category): boolean {
+        const validator = CategoryValidatorFactory.create();
+
+        const isValid = validator.validate(entity);
+
+        return isValid;
     }
 
     changeName(name: string): void {
         this.name = name;
+        Category.validate(this);
     }
 
     changeDescription(description: string): void {
         this.description = description;
+        Category.validate(this);
     }
 
     activate(): void {
@@ -58,6 +72,6 @@ export class Category {
             description: this.description,
             is_active: this.is_active,
             created_ate: this.created_at
-        }
+        };
     }
 }
