@@ -21,6 +21,7 @@ export abstract class ClassValidatorFields<PropsValidated> implements IValidator
             this.validatedData = data;
         }
 
+
         return !errors.length;
     }
 }

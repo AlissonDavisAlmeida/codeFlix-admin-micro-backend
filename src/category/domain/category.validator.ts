@@ -26,7 +26,7 @@ class CategoryRules {
 class CategoryValidator extends ClassValidatorFields<CategoryRules>{
 
     validate(category: Category): boolean {
-
+    
         const categoryRules = new CategoryRules(category);
 
         return super.validate(categoryRules);
