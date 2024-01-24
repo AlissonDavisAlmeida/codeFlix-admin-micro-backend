@@ -77,6 +77,12 @@ export class Category extends Entity {
         this.is_active = false;
     }
 
+    update(props: Omit<CategoryCreateCommand,"is_active">): void {
+        this.name = props.name;
+        this.description = props.description ?? null;
+        Category.validate(this);
+    }
+
     toJSON() {
         return {
             category_id: this.category_id?.id,

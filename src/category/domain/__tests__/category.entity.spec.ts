@@ -153,6 +153,28 @@ describe("Category unit tests", () => {
 
 
     });
+
+    describe("update command", ()=>{
+        test("should update a name and description", ()=>{
+            const category = Category.create({
+                name: "Category 1",
+                description: "Category 1 description",
+                is_active: true
+            });
+
+            expect(category.name).toBe("Category 1");
+            expect(category.description).toBe("Category 1 description");
+
+            category.update({
+                name: "Category 2",
+                description: "Category 2 description"
+            });
+
+            expect(category.name).toBe("Category 2");
+            expect(category.description).toBe("Category 2 description");
+            expect(validateSpy).toHaveBeenCalledTimes(2);
+        });
+    });
 });
 
 describe("Category Validator", () => {
@@ -233,6 +255,51 @@ describe("Category Validator", () => {
             });
 
             expect(() => category.changeDescription(1 as any)).containsErrorMessage({
+                description: ["description must be a string"]
+            });
+        });
+    });
+
+    describe("update command", () => {
+        test("should an invalid Category with name property", () => {
+            const category = Category.create({
+                name: "Category 1"
+            });
+
+            expect(() => category.update({
+                name: ""
+            })).containsErrorMessage({
+                name: ["name should not be empty"]
+            });
+
+            expect(() => category.update({
+                name: null
+            })).containsErrorMessage({
+                name: ["name should not be empty", "name must be a string", "name must be shorter than or equal to 255 characters"]
+            });
+
+            expect(() => category.update({
+                name: "a".repeat(256)
+            })).containsErrorMessage({
+                name: ["name must be shorter than or equal to 255 characters"]
+            });
+
+            expect(() => category.update({
+                name: 1 as any
+            })).containsErrorMessage({
+                name: ["name must be a string", "name must be shorter than or equal to 255 characters"]
+            });
+        });
+
+        test("should an invalid Category with description property", () => {
+            const category = Category.create({
+                name: "Category 1"
+            });
+
+            expect(() => category.update({
+                name: "Category 1",
+                description: 1 as any
+            })).containsErrorMessage({
                 description: ["description must be a string"]
             });
         });
