@@ -154,8 +154,8 @@ describe("Category unit tests", () => {
 
     });
 
-    describe("update command", ()=>{
-        test("should update a name and description", ()=>{
+    describe("update command", () => {
+        test("should update a name and description", () => {
             const category = Category.create({
                 name: "Category 1",
                 description: "Category 1 description",
@@ -173,6 +173,32 @@ describe("Category unit tests", () => {
             expect(category.name).toBe("Category 2");
             expect(category.description).toBe("Category 2 description");
             expect(validateSpy).toHaveBeenCalledTimes(2);
+        });
+    });
+
+    describe("activate and deactivate command", () => {
+        test("should activate", () => {
+            const category = Category.create({
+                name: "Category 1",
+                description: "Category 1 description",
+                is_active: false
+            });
+
+            expect(category.is_active).toBeFalsy();
+            category.activate();
+            expect(category.is_active).toBeTruthy();
+        });
+
+        test("should deactivate", () => {
+            const category = Category.create({
+                name: "Category 1",
+                description: "Category 1 description",
+                is_active: true
+            });
+
+            expect(category.is_active).toBeTruthy();
+            category.deactivate();
+            expect(category.is_active).toBeFalsy();
         });
     });
 });
