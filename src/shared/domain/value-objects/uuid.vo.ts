@@ -17,11 +17,15 @@ export class Uuid extends ValueObject {
     private validateUuid(): boolean {
         const isValid = uuidValidate(this.id);
 
-        if(!isValid) {
+        if (!isValid) {
             throw new InvalidUuidError();
         }
 
         return isValid;
+    }
+
+    toString(): string {
+        return this.id;
     }
 }
 
