@@ -1,8 +1,9 @@
+import { isBoolean } from "lodash";
 import { ValueObject } from "../domain/value-objects/value-object";
 
 export type SortDirection = "asc" | "desc";
 
-export type SearchParamsConstructorProps<Filter = string> = {
+export type SearchParamsInputConstructorProps<Filter = string> = {
     page?: number;
     per_page?: number;
     sort_by?: string | null;
@@ -11,20 +12,20 @@ export type SearchParamsConstructorProps<Filter = string> = {
 }
 
 
-export class SearchParams<Filter = string> extends ValueObject {
+export class SearchParamsInput<Filter = string> extends ValueObject {
     protected _page: number;
     protected _perPage: number = 15;
     protected _sortBy: string | null;
     protected _sortDirection: SortDirection | null;
     protected _filter: Filter | null;
 
-    constructor(props: SearchParamsConstructorProps<Filter> = {}) {
+    constructor(props: SearchParamsInputConstructorProps<Filter> = {}) {
         super();
         this.page = props.page;
-        this.perPage = props.per_page || 15;
-        this.sortBy = props.sort_by || null;
-        this.sortDirection = props.sort_direction || null;
-        this.filter = props.filter || null;
+        this.perPage = props.per_page;
+        this.sortBy = props.sort_by;
+        this.sortDirection = props.sort_direction;
+        this.filter = props.filter;
     }
 
     get page() {
@@ -46,7 +47,8 @@ export class SearchParams<Filter = string> extends ValueObject {
     }
 
     private set perPage(value: number) {
-        let _perPage = +value;
+        // if value is a boolean, can't be converted to a number
+        let _perPage = isBoolean(value) ? 15 : +value;
 
         if (Number.isNaN(_perPage) || _perPage < 1 || parseInt(_perPage as any) !== _perPage) {
             _perPage = 15;
@@ -60,7 +62,8 @@ export class SearchParams<Filter = string> extends ValueObject {
     }
 
     private set sortBy(value: string | null) {
-        this._sortBy = Boolean(value) ? `${value.trim()}` : null;
+        this._sortBy =
+            (value === "" || value === null || value === undefined) ? null : `${value}`.trim();
     }
 
     get sortDirection() {
@@ -73,7 +76,7 @@ export class SearchParams<Filter = string> extends ValueObject {
             return;
         }
 
-        const direction = value?.toLowerCase() as SortDirection | null;
+        const direction = `${value}`.toLowerCase() as SortDirection;
 
         this._sortDirection = direction === "desc" ? "desc" : "asc";
     }
@@ -83,6 +86,6 @@ export class SearchParams<Filter = string> extends ValueObject {
     }
 
     private set filter(value: Filter | null) {
-        this._filter = Boolean(value) ? (`${value}` as Filter) : null;
+        this._filter = (value === "" || value === null || value === undefined) ? null : (`${value}` as Filter);
     }
 }
