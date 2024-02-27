@@ -3,23 +3,23 @@ import { ValueObject } from "../domain/value-objects/value-object";
 
 export type SortDirection = "asc" | "desc";
 
-export type SearchParamsInputConstructorProps<Filter = string> = {
+export type SearchParamsInputConstructorProps<Filter = string, SortBy = string> = {
     page?: number;
     per_page?: number;
-    sort_by?: string | null;
+    sort_by?: SortBy | null;
     sort_direction?: SortDirection | null;
     filter?: Filter | null;
 }
 
 
-export class SearchParamsInput<Filter = string> extends ValueObject {
+export class SearchParamsInput<Filter = string, SortBy = string> extends ValueObject {
     protected _page: number;
     protected _perPage: number = 15;
-    protected _sortBy: string | null;
+    protected _sortBy: SortBy | null;
     protected _sortDirection: SortDirection | null;
     protected _filter: Filter | null;
 
-    constructor(props: SearchParamsInputConstructorProps<Filter> = {}) {
+    constructor(props: SearchParamsInputConstructorProps<Filter, SortBy> = {}) {
         super();
         this.page = props.page;
         this.perPage = props.per_page;
@@ -57,13 +57,13 @@ export class SearchParamsInput<Filter = string> extends ValueObject {
         this._perPage = _perPage;
     }
 
-    get sortBy() {
+    get sortBy(): SortBy | null{
         return this._sortBy;
     }
 
-    private set sortBy(value: string | null) {
+    private set sortBy(value: SortBy | null) {
         this._sortBy =
-            (value === "" || value === null || value === undefined) ? null : `${value}`.trim();
+            (value === "" || value === null || value === undefined) ? null : `${value}`.trim() as SortBy | null;
     }
 
     get sortDirection() {

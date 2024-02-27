@@ -18,10 +18,12 @@ export interface Repository<E extends Entity, EntityId extends ValueObject> {
 export interface SearchableRepository<
     E extends Entity,
     EntityId extends ValueObject,
+    Filter = string,
+    SortBy = string,
     SearchOutput = SearchParamsResult<E>,
-    SearchInput = SearchParamsInput,
+    SearchInput = SearchParamsInput<Filter, SortBy>,
 > extends Repository<E, EntityId> {
-    sortableFields: string[];
+    sortableFields: Set<SortBy>;
 
     search(props: SearchInput): Promise<SearchOutput>
 }
