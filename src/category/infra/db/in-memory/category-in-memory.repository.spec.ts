@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker/locale/pt_BR";
-import { Category } from "../../domain/category.entity";
+import { Category } from "../../../domain/category.entity";
 import { CategoryInMemoryRepository } from "./category-in-memory.repository";
 
 describe("CategoryInMemory repository unit tests", () => {
@@ -10,7 +10,7 @@ describe("CategoryInMemory repository unit tests", () => {
     });
 
     it("should no filter items when filter object is null", async () => {
-        const category = Category.create({ name: faker.person.firstName() });
+        const category = Category.fake().aCategory().build();
         const items = [category];
         const filterItemsSpy = jest.spyOn(items, "filter");
 
@@ -20,9 +20,9 @@ describe("CategoryInMemory repository unit tests", () => {
     });
 
     it("should filter items using filter parameter", async () => {
-        const category1 = Category.create({ name: faker.person.firstName() + "_teste" });
-        const category2 = Category.create({ name: faker.person.firstName() + "_TESTE" });
-        const category3 = Category.create({ name: faker.person.firstName() });
+        const category1 = Category.fake().aCategory().withName(faker.person.firstName() + "_teste").build();
+        const category2 = Category.fake().aCategory().withName(faker.person.firstName() + "_TESTE").build();
+        const category3 = Category.fake().aCategory().build();
         const items = [category1, category2, category3];
         const filterItemsSpy = jest.spyOn(items, "filter");
 
@@ -35,9 +35,9 @@ describe("CategoryInMemory repository unit tests", () => {
     it("should sort items by created_at desc when sortBy is null", async () => {
         const created_at = new Date();
 
-        const category1 = Category.create({ name: faker.person.firstName(), created_at });
-        const category2 = Category.create({ name: faker.person.firstName(), created_at: new Date(created_at.getTime() + 1000) });
-        const category3 = Category.create({ name: faker.person.firstName(), created_at: new Date(created_at.getTime() + 2000) });
+        const category1 = Category.fake().aCategory().withCreatedAt(created_at).build();
+        const category2 = Category.fake().aCategory().withCreatedAt(new Date(created_at.getTime() + 1000)).build();
+        const category3 = Category.fake().aCategory().withCreatedAt(new Date(created_at.getTime() + 2000)).build();
         const items = [category1, category2, category3];
         const applySortSpy = jest.spyOn(repository, "applySort");
 
@@ -48,9 +48,9 @@ describe("CategoryInMemory repository unit tests", () => {
     });
 
     it("should sort items by name", async () => {
-        const category1 = Category.create({ name: "B" });
-        const category2 = Category.create({ name: "C" });
-        const category3 = Category.create({ name: "A" });
+        const category1 = Category.fake().aCategory().withName("B").build();
+        const category2 = Category.fake().aCategory().withName("C").build();
+        const category3 = Category.fake().aCategory().withName("A").build();
         const items = [category1, category2, category3];
         const applySortSpy = jest.spyOn(repository, "applySort");
 
