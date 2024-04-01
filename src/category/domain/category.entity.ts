@@ -95,7 +95,7 @@ export class Category extends Entity {
             name: this.name,
             description: this.description,
             is_active: this.is_active,
-            created_ate: this.created_at
+            created_at: this.created_at
         };
     }
 }
