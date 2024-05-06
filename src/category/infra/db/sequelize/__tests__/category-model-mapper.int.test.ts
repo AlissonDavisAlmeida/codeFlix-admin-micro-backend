@@ -1,0 +1,89 @@
+import { Sequelize } from "sequelize-typescript";
+import { CategoryModel } from "../category.model";
+import { CategoryModelMapper } from "../category-model-mapper";
+import { EntityValidationError } from "../../../../../shared/domain/validators/validation.error";
+import { Category } from "../../../../domain/category.entity";
+import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
+
+describe("CategoryModelMapper integration tests", () => {
+    let sequelize: Sequelize;
+
+
+    beforeAll(() => {
+        sequelize = new Sequelize({
+            dialect: "sqlite",
+            storage: ":memory:",
+            models: [CategoryModel]
+        });
+    });
+
+    beforeEach(async () => {
+        await sequelize.sync({ force: true });
+    });
+
+    afterAll(async () => {
+        await sequelize.close();
+    });
+
+    it("should throw an error if category is invalid", () => {
+        const model = CategoryModel.build({
+            category_id: "3f290c57-7b6b-4b7d-9d8e-285e404046a6",
+        });
+
+        try {
+            CategoryModelMapper.toEntity(model);
+            fail("should have thrown an error");
+        } catch (error) {
+            expect(error).toBeInstanceOf(EntityValidationError);
+            expect((error as EntityValidationError).errors).toMatchObject({
+
+                name: ["name should not be empty", "name must be a string", "name must be shorter than or equal to 255 characters"]
+
+            });
+        }
+    });
+
+    it("should convert a category model to entity", () => {
+        const model = CategoryModel.build({
+            category_id: "3f290c57-7b6b-4b7d-9d8e-285e404046a6",
+            created_at: new Date(),
+            description: "description",
+            is_active: true,
+            name: "name",
+        });
+
+        const entity = CategoryModelMapper.toEntity(model);
+
+        expect(entity.toJSON()).toStrictEqual(
+            new Category({
+                category_id: new Uuid( "3f290c57-7b6b-4b7d-9d8e-285e404046a6"),
+                created_at: model.created_at,
+                description: model.description,
+                is_active: model.is_active,
+                name: model.name,
+            }).toJSON()
+            
+        );
+    });
+
+    it("should convert a category entity to model", () => {
+        const entity = new Category({
+            category_id: new Uuid("3f290c57-7b6b-4b7d-9d8e-285e404046a6"),
+            created_at: new Date(),
+            description: "description",
+            is_active: true,
+            name: "name",
+        });
+
+        const model = CategoryModelMapper.toModel(entity);
+
+        expect(model.toJSON()).toStrictEqual(CategoryModel.build({
+            category_id: "3f290c57-7b6b-4b7d-9d8e-285e404046a6",
+            created_at: entity.created_at,
+            description: entity.description,
+            is_active: entity.is_active,
+            name: entity.name,
+        }).toJSON());
+        
+    });
+});

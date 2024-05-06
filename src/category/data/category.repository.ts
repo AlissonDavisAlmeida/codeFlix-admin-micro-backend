@@ -1,5 +1,22 @@
-import { Repository } from "../../shared/data/repository";
+import { SearchParamsInput, SearchParamsResult } from "../../shared/data";
+import { SearchableRepository } from "../../shared/data/repository";
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
-import { Category } from "../domain/category.entity";
+import { Category, CategoryConstructorProps } from "../domain/category.entity";
 
-export interface CategoryRepository extends Repository<Category, Uuid>{}
+export type CategoryFilter = string;
+
+export type CategorySortBy = keyof CategoryConstructorProps;
+
+export class CategorySearchParamsInput extends SearchParamsInput<CategoryFilter, CategorySortBy> { }
+
+export class CategorySearchParamsResult extends SearchParamsResult<Category> { }
+
+
+export interface CategoryRepository extends SearchableRepository<
+    Category,
+    Uuid,
+    CategoryFilter,
+    CategorySortBy,
+    CategorySearchParamsResult,
+    CategorySearchParamsInput
+> { }

@@ -1,11 +1,12 @@
 import { ValueObject } from "../domain/value-objects/value-object";
 import { Entity } from "../entity";
 
-type SearchParamsResultProps<E extends Entity> = {
+export type SearchParamsResultProps<E extends Entity> = {
     items: E[];
     total: number;
     current_page: number;
     per_page: number;
+    last_page: number;
 }
 
 export class SearchParamsResult<E extends Entity> extends ValueObject {

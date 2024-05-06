@@ -6,7 +6,8 @@ describe("SearchResult unit tests", ()=>{
             items: ["item1", "item2"] as any,
             total: 4,
             current_page: 1,
-            per_page: 2
+            per_page: 2,
+            last_page: 2
         });
 
         expect(result.toJSON()).toStrictEqual({
@@ -25,7 +26,8 @@ describe("SearchResult unit tests", ()=>{
             items: ["item1", "item2"] as any,
             total: 4,
             current_page: 1,
-            per_page: 5
+            per_page: 5,
+            last_page: 2
         });
 
         expect(result.last_page).toBe(1);
@@ -36,7 +38,8 @@ describe("SearchResult unit tests", ()=>{
             items: ["item1", "item2"] as any,
             total: 4,
             current_page: 1,
-            per_page: 3
+            per_page: 3,
+            last_page: 2
         });
 
         expect(result.last_page).toBe(2);

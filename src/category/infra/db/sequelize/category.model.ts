@@ -1,7 +1,19 @@
 import { Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Optional } from "sequelize";
+
+export interface CategoryAttributes{
+    category_id: string;
+    created_at: Date;
+    description: string | null;
+    is_active: boolean;
+    name: string;
+}
+
+interface CategoryAttributesCreation extends Optional<CategoryAttributes, "category_id"> {}
+
 
 @Table({ tableName: "categories", timestamps: false })
-export class CategoryModel extends Model {
+export class CategoryModel extends Model<CategoryAttributes, CategoryAttributesCreation> {
     @PrimaryKey
     @Column({ type: DataType.UUID })
     declare category_id: string;

@@ -194,7 +194,8 @@ describe("In memory repository unit tests", () => {
                 items: items.slice(0, 15),
                 total: items.length,
                 current_page: 1,
-                per_page: 15
+                per_page: 15,
+                last_page: 2
             }));
         });
 
@@ -220,7 +221,8 @@ describe("In memory repository unit tests", () => {
                 items: [items[0], items[2]],
                 total: 3,
                 current_page: 1,
-                per_page: 2
+                per_page: 2,
+                last_page: 2
             }));
 
             result = await repository.search(
@@ -235,7 +237,8 @@ describe("In memory repository unit tests", () => {
                 items: [items[3]],
                 total: 3,
                 current_page: 2,
-                per_page: 2
+                per_page: 2,
+                last_page: 2
             }));
         });
 
@@ -260,7 +263,8 @@ describe("In memory repository unit tests", () => {
                 items: [items[2], items[1]],
                 total: 3,
                 current_page: 1,
-                per_page: 2
+                per_page: 2,
+                last_page: 2
             }));
 
             result = await repository.search(
@@ -275,7 +279,8 @@ describe("In memory repository unit tests", () => {
                 items: [items[0]],
                 total: 3,
                 current_page: 2,
-                per_page: 2
+                per_page: 2,
+                last_page: 2
             }));
         });
 
@@ -301,7 +306,8 @@ describe("In memory repository unit tests", () => {
                 items: [items[2]],
                 total: 1,
                 current_page: 1,
-                per_page: 2
+                per_page: 2,
+                last_page: 1
             }));
 
             result = await repository.search(
@@ -317,7 +323,8 @@ describe("In memory repository unit tests", () => {
                 items: [],
                 total: 1,
                 current_page: 2,
-                per_page: 2
+                per_page: 2,
+                last_page: 1
             }));
 
         });
