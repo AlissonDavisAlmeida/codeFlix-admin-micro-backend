@@ -1,4 +1,3 @@
-import { Sequelize } from "sequelize-typescript";
 import { CategoryModel } from "../category.model";
 import { CategoryRepositorySequelize } from "../category-sequelize.repository";
 import { Category } from "../../../../domain/category.entity";
@@ -6,28 +5,20 @@ import { EntityNotFoundError } from "../../../../../shared/domain/error/entity-n
 import { CategoryModelMapper } from "../category-model-mapper";
 import { CategorySearchParamsInput, CategorySearchParamsResult } from "../../../../data/category.repository";
 import { SearchParamsResultProps } from "../../../../../shared/data";
+import { setupSequelize } from "../../../../../shared/infra/testing/helpers";
 
 describe("CategorySequelizeRepository integration tests", () => {
-    let sequelize: Sequelize;
     let categoryRepository: CategoryRepositorySequelize;
 
 
-    beforeAll(() => {
-        sequelize = new Sequelize({
-            dialect: "sqlite",
-            storage: ":memory:",
-            models: [CategoryModel]
-        });
+    setupSequelize({
+        models: [CategoryModel],
+        storage: ":memory:"
     });
-
     beforeEach(async () => {
-        await sequelize.sync({ force: true });
         categoryRepository = new CategoryRepositorySequelize(CategoryModel);
     });
 
-    afterAll(async () => {
-        await sequelize.close();
-    });
 
     it("should insert a new category", async () => {
         const category = Category.fake().aCategory().build();
