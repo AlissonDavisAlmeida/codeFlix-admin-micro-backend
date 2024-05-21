@@ -1,5 +1,5 @@
 import { Chance } from "chance";
-import { CategoryFakeBuilder } from "../category-faker.builder";
+import { CategoryFakeBuilder } from "../entities/category-faker.builder";
 
 describe("CategoryFakerBuilder Unit Tests", () => {
   describe("category_id prop", () => {

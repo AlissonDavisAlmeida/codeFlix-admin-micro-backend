@@ -1,6 +1,6 @@
 import { CategoryModel } from "../category.model";
 import { CategoryRepositorySequelize } from "../category-sequelize.repository";
-import { Category } from "../../../../domain/category.entity";
+import { Category } from "../../../../domain/entities/category.entity";
 import { EntityNotFoundError } from "../../../../../shared/domain/error/entity-not-found.error";
 import { CategoryModelMapper } from "../category-model-mapper";
 import { CategorySearchParamsInput, CategorySearchParamsResult } from "../../../../data/category.repository";

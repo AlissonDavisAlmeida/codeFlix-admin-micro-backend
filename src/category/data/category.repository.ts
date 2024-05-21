@@ -1,7 +1,7 @@
 import { SearchParamsInput, SearchParamsResult } from "../../shared/data";
 import { SearchableRepository } from "../../shared/data/repository";
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
-import { Category, CategoryConstructorProps } from "../domain/category.entity";
+import { Category, CategoryConstructorProps } from "../domain/entities/category.entity";
 
 export type CategoryFilter = string;
 

@@ -1,6 +1,6 @@
 import { IsString, MaxLength, IsNotEmpty, IsOptional, IsBoolean } from "class-validator";
 import { Category } from "./category.entity";
-import { ClassValidatorFields } from "../../shared/domain/validators/class-validator-fields";
+import { ClassValidatorFields } from "../../../shared/domain/validators/class-validator-fields";
 
 
 class CategoryRules {

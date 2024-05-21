@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker/locale/pt_BR";
-import { Category } from "../../../domain/category.entity";
+import { Category } from "../../../domain/entities/category.entity";
 import { CategoryInMemoryRepository } from "./category-in-memory.repository";
 
 describe("CategoryInMemory repository unit tests", () => {

@@ -1,7 +1,7 @@
-import { EntityValidationError } from "../../shared/domain/validators/validation.error";
-import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
-import { ValueObject } from "../../shared/domain/value-objects/value-object";
-import { Entity } from "../../shared/entity";
+import { EntityValidationError } from "../../../shared/domain/validators/validation.error";
+import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
+import { ValueObject } from "../../../shared/domain/value-objects/value-object";
+import { Entity } from "../../../shared/entity";
 import { CategoryFakeBuilder } from "./category-faker.builder";
 import { CategoryValidatorFactory } from "./category.validator";
 

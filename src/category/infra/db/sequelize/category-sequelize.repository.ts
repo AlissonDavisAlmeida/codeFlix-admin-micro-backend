@@ -2,7 +2,7 @@ import { Op } from "sequelize";
 import { EntityNotFoundError } from "../../../../shared/domain/error/entity-not-found.error";
 import { Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
 import { CategoryRepository, CategorySearchParamsInput, CategorySearchParamsResult, CategorySortBy } from "../../../data/category.repository";
-import { Category } from "../../../domain/category.entity";
+import { Category } from "../../../domain/entities/category.entity";
 import { CategoryModel } from "./category.model";
 import { CategoryModelMapper } from "./category-model-mapper";
 

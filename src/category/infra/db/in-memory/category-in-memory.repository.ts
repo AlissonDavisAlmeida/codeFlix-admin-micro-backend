@@ -1,7 +1,7 @@
 import { Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
 import { ApplyFilterProps, ApplySortProps, InMemorySearchableRepository } from "../../../../shared/infra/db/in-memory/in-memory.repository";
 import { CategoryFilter, CategoryRepository } from "../../../data/category.repository";
-import { Category, CategoryConstructorProps } from "../../../domain/category.entity";
+import { Category, CategoryConstructorProps } from "../../../domain/entities/category.entity";
 
 type KeyCategoryConstructorProps = keyof CategoryConstructorProps;
 
