@@ -94,6 +94,7 @@ export abstract class InMemorySearchableRepository<
             total: itemsFiltered.length,
             current_page: props.page,
             per_page: props.perPage,
+            last_page: Math.ceil(itemsFiltered.length / props.perPage)
         });
 
         return result;
