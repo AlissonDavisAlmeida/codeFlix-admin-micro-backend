@@ -4,20 +4,20 @@ import { setupSequelize } from "../../../../shared/infra/testing/helpers";
 import { Category } from "../../../domain/entities/category.entity";
 import { CategoryRepositorySequelize } from "../../../infra/db/sequelize/category-sequelize.repository";
 import { CategoryModel } from "../../../infra/db/sequelize/category.model";
-import { DeleteCategoryInput, DeleteCategoryOutput, DeleteCategoryUseCase } from "../delete-category.usecase";
+import { GetCategoryInput, GetCategoryOutput, GetCategoryUseCase } from "../get-category.usecase";
 
 type SutTypes = {
-    sut: DeleteCategoryUseCase
+    sut: GetCategoryUseCase
     categoryRepository: CategoryRepositorySequelize
 }
 
 const makeSut = (): SutTypes => {
     const categoryRepository = new CategoryRepositorySequelize(CategoryModel);
-    const sut: DeleteCategoryUseCase = new DeleteCategoryUseCase(categoryRepository);
+    const sut: GetCategoryUseCase = new GetCategoryUseCase(categoryRepository);
 
     return { sut, categoryRepository };
 };
-describe("DeleteCategoryUseCase integration tests", () => {
+describe("GetCategoryUseCase integration tests", () => {
     
     setupSequelize({
         models: [CategoryModel],
@@ -27,16 +27,16 @@ describe("DeleteCategoryUseCase integration tests", () => {
     it("should throw error if category does not exist", async () => {
         const { sut } = makeSut();
 
-        const deleteCategoryInput: DeleteCategoryInput = {
+        const getCategoryInput:  GetCategoryInput = {
             id: new Uuid().id
         };
 
         await expect(() => sut.execute({ id: "invalid_id" })).rejects.toThrow(new InvalidUuidError());
 
         try {
-            await sut.execute(deleteCategoryInput);
+            await sut.execute(getCategoryInput);
         } catch (error: any) {
-            expect(error).toEqual(new EntityNotFoundError(deleteCategoryInput.id, Category));
+            expect(error).toEqual(new EntityNotFoundError(getCategoryInput.id, Category));
         }
     });
 
@@ -48,16 +48,14 @@ describe("DeleteCategoryUseCase integration tests", () => {
         await categoryRepository.insert(category);
 
 
-        const deleteCategoryInput: DeleteCategoryInput = {
+        const getCategoryInput: GetCategoryInput = {
             id: category.category_id.id
         };
 
-        const createCategoryOutput: DeleteCategoryOutput = await sut.execute(deleteCategoryInput);
+        const {category : getCategoryOutput}: GetCategoryOutput = await sut.execute(getCategoryInput);
 
-        const categoryDeleted = await categoryRepository.findById(new Uuid(deleteCategoryInput.id));
 
-        expect(createCategoryOutput.success).toBe(true);
-        expect(categoryDeleted).toBeNull();
+        expect(getCategoryOutput).toStrictEqual(category);
 
     });
 });

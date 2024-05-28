@@ -2,41 +2,41 @@ import { EntityNotFoundError } from "../../../../shared/domain/error/entity-not-
 import { InvalidUuidError, Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../../../domain/entities/category.entity";
 import { CategoryInMemoryRepository } from "../../../infra/db/in-memory/category-in-memory.repository";
-import { DeleteCategoryInput, DeleteCategoryUseCase } from "../delete-category.usecase";
+import { GetCategoryInput, GetCategoryUseCase } from "../get-category.usecase";
 
 
 type SutTypes = {
-    sut: DeleteCategoryUseCase
+    sut: GetCategoryUseCase
     categoryRepository: CategoryInMemoryRepository
 }
 
 const makeSut = (): SutTypes => {
     const categoryRepository = new CategoryInMemoryRepository();
-    const sut: DeleteCategoryUseCase = new DeleteCategoryUseCase(categoryRepository);
+    const sut: GetCategoryUseCase = new GetCategoryUseCase(categoryRepository);
 
     return { sut, categoryRepository };
 };
 
-describe("DeleteCategoryUseCase unit tests", () => {
+describe("GetCategoryUseCase unit tests", () => {
 
     it("should throw error if category does not exist", async () => {
         const { sut } = makeSut();
 
-        const deleteCategoryInput: DeleteCategoryInput = {
+        const getCategoryInput: GetCategoryInput = {
             id: new Uuid().id
         };
 
         await expect(() => sut.execute({ id: "invalid_id" })).rejects.toThrow(new InvalidUuidError());
 
         try {
-            await sut.execute(deleteCategoryInput);
+            await sut.execute(getCategoryInput);
         } catch (error: any) {
-            expect(error).toEqual(new EntityNotFoundError(deleteCategoryInput.id, Category));
+            expect(error).toEqual(new EntityNotFoundError(getCategoryInput.id, Category));
         }
     });
-    it("should delete a category", async () => {
+    it("should find a category", async () => {
         const { sut, categoryRepository } = makeSut();
-        const deleteSpy = jest.spyOn(categoryRepository, "delete");
+        const findSpy = jest.spyOn(categoryRepository, "findById");
 
         const category = Category.create({
             name: "any_name",
@@ -45,14 +45,14 @@ describe("DeleteCategoryUseCase unit tests", () => {
 
         categoryRepository.items = [category];
 
-        const deleteCategoryInput: DeleteCategoryInput = {
+        const deleteCategoryInput: GetCategoryInput = {
             id: category.category_id.id
         };
 
-        const deleteCategoryOutput = await sut.execute(deleteCategoryInput);
+        const {category: getCategoryOutput} = await sut.execute(deleteCategoryInput);
 
-        expect(deleteSpy).toHaveBeenCalled();
-        expect(deleteCategoryOutput.success).toBe(true);
+        expect(findSpy).toHaveBeenCalled();
+        expect(getCategoryOutput).toStrictEqual(category);
 
     });
 });
