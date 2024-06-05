@@ -1,4 +1,5 @@
 import { IUseCase } from "../../../shared/application/use-case.interface";
+import { EntityNotFoundError } from "../../../shared/domain/error/entity-not-found.error";
 import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
 import { CategoryRepository } from "../../data/category.repository";
 import { Category } from "../../domain/entities/category.entity";
@@ -20,6 +21,9 @@ export class GetCategoryUseCase implements IUseCase<GetCategoryInput, GetCategor
         const uuid = new Uuid(input.id);
         const category = await this.categoryRepository.findById(uuid);
 
+        if(!category) {
+            throw new EntityNotFoundError(uuid.id, Category);
+        }
         
         return {
             category

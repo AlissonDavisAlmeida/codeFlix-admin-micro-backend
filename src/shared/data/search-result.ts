@@ -9,7 +9,7 @@ export type SearchParamsResultProps<E extends Entity> = {
     last_page: number;
 }
 
-export class SearchParamsResult<E extends Entity> extends ValueObject {
+export class SearchParamsResult<E extends Entity = Entity> extends ValueObject {
     readonly items: E[];
     readonly total: number;
     readonly current_page: number;

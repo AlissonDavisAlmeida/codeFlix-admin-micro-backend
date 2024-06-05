@@ -18,7 +18,7 @@ const makeSut = (): SutTypes => {
     return { sut, categoryRepository };
 };
 describe("GetCategoryUseCase integration tests", () => {
-    
+
     setupSequelize({
         models: [CategoryModel],
         storage: ":memory:"
@@ -27,24 +27,22 @@ describe("GetCategoryUseCase integration tests", () => {
     it("should throw error if category does not exist", async () => {
         const { sut } = makeSut();
 
-        const getCategoryInput:  GetCategoryInput = {
+        const getCategoryInput: GetCategoryInput = {
             id: new Uuid().id
         };
 
         await expect(() => sut.execute({ id: "invalid_id" })).rejects.toThrow(new InvalidUuidError());
 
-        try {
-            await sut.execute(getCategoryInput);
-        } catch (error: any) {
-            expect(error).toEqual(new EntityNotFoundError(getCategoryInput.id, Category));
-        }
+
+        await expect(() => sut.execute(getCategoryInput)).rejects.toThrow(new EntityNotFoundError(getCategoryInput.id, Category));
+
     });
 
     it("should delete a category", async () => {
         const { sut, categoryRepository } = makeSut();
-        
+
         const category = Category.fake().aCategory().build();
-        
+
         await categoryRepository.insert(category);
 
 
@@ -52,7 +50,7 @@ describe("GetCategoryUseCase integration tests", () => {
             id: category.category_id.id
         };
 
-        const {category : getCategoryOutput}: GetCategoryOutput = await sut.execute(getCategoryInput);
+        const { category: getCategoryOutput }: GetCategoryOutput = await sut.execute(getCategoryInput);
 
 
         expect(getCategoryOutput).toStrictEqual(category);

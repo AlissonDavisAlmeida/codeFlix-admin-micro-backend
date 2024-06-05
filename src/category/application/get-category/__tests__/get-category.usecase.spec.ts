@@ -28,11 +28,7 @@ describe("GetCategoryUseCase unit tests", () => {
 
         await expect(() => sut.execute({ id: "invalid_id" })).rejects.toThrow(new InvalidUuidError());
 
-        try {
-            await sut.execute(getCategoryInput);
-        } catch (error: any) {
-            expect(error).toEqual(new EntityNotFoundError(getCategoryInput.id, Category));
-        }
+        await expect(() => sut.execute(getCategoryInput)).rejects.toThrow(new EntityNotFoundError(getCategoryInput.id, Category));
     });
     it("should find a category", async () => {
         const { sut, categoryRepository } = makeSut();
