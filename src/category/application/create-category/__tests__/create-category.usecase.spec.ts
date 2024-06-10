@@ -1,5 +1,6 @@
 import { CategoryInMemoryRepository } from "../../../infra/db/in-memory/category-in-memory.repository";
-import { CreateCategoryInput, CreateCategoryUseCase } from "../create-category.usecase";
+import { CreateCategoryInput } from "../create-category-input";
+import { CreateCategoryUseCase } from "../create-category.usecase";
 
 
 type SutTypes = {

@@ -1,6 +1,8 @@
 import { IUseCase } from "../../../shared/application/use-case.interface";
 import { CategoryRepository } from "../../data/category.repository";
 import { Category } from "../../domain/entities/category.entity";
+import { EntityValidationError } from "../../../shared/domain/validators/validation.error";
+import { CreateCategoryInput } from "./create-category-input";
 
 export class CreateCategoryUseCase implements IUseCase<CreateCategoryInput, CreateCategoryOutput> {
 
@@ -9,6 +11,10 @@ export class CreateCategoryUseCase implements IUseCase<CreateCategoryInput, Crea
 
     async execute(input: CreateCategoryInput): Promise<CreateCategoryOutput> {
         const entity = Category.create(input);
+
+        if (entity.notification.hasErrors()) {
+            throw new EntityValidationError(entity.notification.toJSON());
+        }
 
         await this.categoryRepository.insert(entity);
 
@@ -22,11 +28,6 @@ export class CreateCategoryUseCase implements IUseCase<CreateCategoryInput, Crea
     }
 }
 
-export type CreateCategoryInput = {
-    name: string
-    description?: string | null
-    is_active?: boolean
-}
 
 export type CreateCategoryOutput = {
     id: string

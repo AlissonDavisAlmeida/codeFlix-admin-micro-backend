@@ -1,9 +1,9 @@
-import { FieldsErrors } from "../shared/domain/validators/validators-fields.interface";
+import { ToJsonError } from "../shared/domain/validators/notification";
 
 declare global {
     namespace jest {
         interface Matchers<R> {
-            containsErrorMessage(expected: FieldsErrors): R;
+            containsErrorMessage(expected: ToJsonError): R;
         }
     }
 }

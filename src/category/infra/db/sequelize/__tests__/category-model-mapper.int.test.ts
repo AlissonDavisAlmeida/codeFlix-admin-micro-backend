@@ -16,6 +16,7 @@ describe("CategoryModelMapper integration tests", () => {
     
 
     it("should throw an error if category is invalid", () => {
+        expect.assertions(2);
         const model = CategoryModel.build({
             category_id: "3f290c57-7b6b-4b7d-9d8e-285e404046a6",
         });
@@ -25,11 +26,11 @@ describe("CategoryModelMapper integration tests", () => {
             fail("should have thrown an error");
         } catch (error) {
             expect(error).toBeInstanceOf(EntityValidationError);
-            expect((error as EntityValidationError).errors).toMatchObject({
+            expect((error as EntityValidationError).errors).toMatchObject([{
 
-                name: ["name should not be empty", "name must be a string", "name must be shorter than or equal to 255 characters"]
+                name: ["name must be shorter than or equal to 255 characters"]
 
-            });
+            }]);
         }
     });
 

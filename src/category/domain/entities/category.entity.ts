@@ -1,3 +1,4 @@
+import { Notification } from "../../../shared/domain/validators/notification";
 import { EntityValidationError } from "../../../shared/domain/validators/validation.error";
 import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
 import { ValueObject } from "../../../shared/domain/value-objects/value-object";
@@ -27,9 +28,11 @@ export class Category extends Entity {
     description: string | null;
     is_active?: boolean;
     created_at?: Date;
+    notification: Notification = new Notification();
 
     constructor(props: CategoryConstructorProps) {
         super();
+
 
         this.category_id = props.category_id ?? new Uuid();
         this.name = props.name;
@@ -45,19 +48,18 @@ export class Category extends Entity {
     static create(props: CategoryCreateCommand): Category {
         const category = new Category(props);
 
-        Category.validate(category);
+        category.validate(["name"]);
 
         return category;
     }
 
-    static validate(entity: Category): void {
+validate(fields?: string[]): void {
         const validator = CategoryValidatorFactory.create();
+        validator.validate(this.notification, this, fields);
 
-        const isValid = validator.validate(entity);
-
-        if (!isValid) {
-            throw new EntityValidationError(validator.errors);
-        }
+        // if (!isValid) {
+        //     throw new EntityValidationError(this.notification.toJSON());
+        // }
 
     }
 
@@ -67,12 +69,12 @@ export class Category extends Entity {
 
     changeName(name: string): void {
         this.name = name;
-        Category.validate(this);
+        this.validate(["name"]);
     }
 
     changeDescription(description: string): void {
         this.description = description;
-        Category.validate(this);
+        // this.validate(["description"]);
     }
 
     activate(): void {
@@ -83,10 +85,10 @@ export class Category extends Entity {
         this.is_active = false;
     }
 
-    update(props: Omit<CategoryCreateCommand,"is_active">): void {
+    update(props: Omit<CategoryCreateCommand, "is_active">): void {
         this.name = props.name;
         this.description = props.description ?? null;
-        Category.validate(this);
+        this.validate(["name"]);
     }
 
     toJSON() {

@@ -2,7 +2,8 @@ import { Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
 import { setupSequelize } from "../../../../shared/infra/testing/helpers";
 import { CategoryRepositorySequelize } from "../../../infra/db/sequelize/category-sequelize.repository";
 import { CategoryModel } from "../../../infra/db/sequelize/category.model";
-import { CreateCategoryInput, CreateCategoryOutput, CreateCategoryUseCase } from "../create-category.usecase";
+import { CreateCategoryInput } from "../create-category-input";
+import { CreateCategoryOutput, CreateCategoryUseCase } from "../create-category.usecase";
 
 type SutTypes = {
     sut: CreateCategoryUseCase

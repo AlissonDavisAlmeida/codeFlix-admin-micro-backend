@@ -1,11 +1,13 @@
 import { ClassValidatorFields } from "../../domain/validators/class-validator-fields";
+import { Notification, ToJsonError } from "../../domain/validators/notification";
 import { EntityValidationError } from "../../domain/validators/validation.error";
-import { FieldsErrors } from "../../domain/validators/validators-fields.interface";
 
 type Expected = |
 {
-    validator: ClassValidatorFields<any>,
+    validator: ClassValidatorFields,
+    notification: Notification,
     data: any
+    fields: string[]
 }
     |
 
@@ -14,7 +16,7 @@ type Expected = |
 
 
 expect.extend({
-    containsErrorMessage(expected: Expected, received: FieldsErrors) {
+    containsErrorMessage(expected: Expected, received: ToJsonError) {
         if (typeof expected === "function") {
             try {
                 expected();
@@ -24,22 +26,21 @@ expect.extend({
                 return assertContainsErrorsMessages(error.errors, received);
             }
         } else {
-            const { validator, data } = expected;
-
-            const validated = validator.validate(data);
+            const { validator, data, fields, notification } = expected;
+            const validated = validator.validate(notification, data, fields);
 
             if (validated) {
                 return isValid();
             }
 
-            return assertContainsErrorsMessages(validator.errors, received);
+            return assertContainsErrorsMessages(notification.toJSON(), received);
         }
     }
 });
 
 
 
-function assertContainsErrorsMessages(expected: FieldsErrors, received: FieldsErrors) {
+function assertContainsErrorsMessages(expected: ToJsonError, received: ToJsonError) {
     const isMatch = expect.objectContaining(received).asymmetricMatch(expected);
 
     if (isMatch) {
