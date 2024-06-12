@@ -1,5 +1,5 @@
-import { config as readEnv } from 'dotenv';
-import { join } from 'node:path';
+import { config as readEnv } from "dotenv";
+import { join } from "node:path";
 
 export class Config {
   static env: any = null;
@@ -8,9 +8,9 @@ export class Config {
     Config.readEnv();
 
     return {
-      dialect: 'sqlite' as any,
+      dialect: "sqlite" as any,
       host: Config.env.DB_HOST,
-      logging: Config.env.DB_LOGGING === 'true',
+      logging: Config.env.DB_LOGGING === "true",
     };
   }
 

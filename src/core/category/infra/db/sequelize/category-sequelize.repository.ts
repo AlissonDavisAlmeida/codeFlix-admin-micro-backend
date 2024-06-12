@@ -6,6 +6,7 @@ import { Category } from "../../../domain/entities/category.entity";
 import { CategoryModel } from "./category.model";
 import { CategoryModelMapper } from "./category-model-mapper";
 
+
 export class CategoryRepositorySequelize implements CategoryRepository {
     sortableFields: Set<CategorySortBy> = new Set(["name", "created_at"]);
 
