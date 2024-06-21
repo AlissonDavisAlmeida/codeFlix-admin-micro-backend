@@ -5,6 +5,10 @@ import { UpdateCategoryDto } from "./dto/update-category.dto";
 @Controller("categories")
 export class CategoriesController {
 
+  constructor(
+  ){
+  }
+
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
   }
