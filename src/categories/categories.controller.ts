@@ -1,11 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
+import { CategoryRepositorySequelize } from "@core/category/infra/db/sequelize";
 
 @Controller("categories")
 export class CategoriesController {
 
   constructor(
+    private categoryRepository: CategoryRepositorySequelize
   ){
   }
 
