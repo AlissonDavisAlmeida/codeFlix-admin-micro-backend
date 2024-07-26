@@ -1,28 +1,23 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CategoriesController } from "./categories.controller";
-import { CategoryModel, CategoryRepositorySequelize } from "@core/category/infra/db/sequelize";
-import { SequelizeModule, getModelToken } from "@nestjs/sequelize";
 import { DatabaseModule } from "src/database/database.module";
+import { CategoriesModule } from "./categories.module";
+import { ConfigModule } from "src/config/config.module";
+import { ConfigService } from "@nestjs/config";
 
 describe("CategoriesController", () => {
   let controller: CategoriesController;
-
+  let config: ConfigService;
+  
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
+        ConfigModule.forRoot(),
         DatabaseModule,
-        SequelizeModule.forFeature([CategoryModel]),
-      ],
-      controllers: [CategoriesController],
-      providers: [
-        {
-          provide: CategoryRepositorySequelize,
-          useFactory: (categoryModel: typeof CategoryModel) => new CategoryRepositorySequelize(categoryModel),
-          inject: [getModelToken(CategoryModel)],
-        }
+        CategoriesModule
       ],
     }).compile();
-
+    config = module.get<ConfigService>(ConfigService);
     controller = module.get<CategoriesController>(CategoriesController);
   });
 
