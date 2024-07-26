@@ -12,7 +12,7 @@ type DB_SCHEMA_TYPE = {
     DB_USERNAME: string
     DB_PASSWORD: string
     DB_DATABASE: string
-    DB_LOG: boolean
+    DB_LOGGING: boolean
     DB_AUTO_LOAD_MODELS: boolean
 }
 
@@ -36,9 +36,11 @@ export const CONFIG_DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
         is: "mysql",
         then: Joi.required()
     }),
-    DB_LOG: Joi.boolean().required(),
+    DB_LOGGING: Joi.boolean().required(),
     DB_AUTO_LOAD_MODELS: Joi.boolean().required()
 };
+
+export type CONFIG_SCHEMA_TYPE = DB_SCHEMA_TYPE;
 
 @Module({})
 export class ConfigModule extends Config {
