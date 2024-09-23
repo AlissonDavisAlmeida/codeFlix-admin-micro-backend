@@ -1,7 +1,8 @@
 import { Module } from "@nestjs/common";
 import { CategoriesController } from "./categories.controller";
-import { SequelizeModule, getModelToken } from "@nestjs/sequelize";
-import { CategoryRepositorySequelize, CategoryModel } from "@core/category/infra/db/sequelize";
+import { SequelizeModule } from "@nestjs/sequelize";
+import { CategoryModel } from "@core/category/infra/db/sequelize";
+import { CATEGORY_PROVIDERS } from "./categories.provider";
 
 @Module({
   imports: [
@@ -9,11 +10,8 @@ import { CategoryRepositorySequelize, CategoryModel } from "@core/category/infra
   ],
   controllers: [CategoriesController],
   providers: [
-    {
-      provide: CategoryRepositorySequelize,
-      useFactory: (categoryModel: typeof CategoryModel) => new CategoryRepositorySequelize(categoryModel),
-      inject: [getModelToken(CategoryModel)],
-    }
+    ...Object.values(CATEGORY_PROVIDERS.REPOSITORIES),
+    ...Object.values(CATEGORY_PROVIDERS.USE_CASES),
   ],
 })
 export class CategoriesModule { }
