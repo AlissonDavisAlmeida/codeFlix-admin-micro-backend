@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Inject } from "@nestjs/common";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
-import { CreateCategoryUseCase } from "@core/category/application/create-category/create-category.usecase";
+import { CreateCategoryOutput, CreateCategoryUseCase } from "@core/category/application/create-category/create-category.usecase";
 import { UpdateCategoryUseCase } from "@core/category/application/update-category/update-category.usecase";
 import { DeleteCategoryUseCase } from "@core/category/application/delete-category/delete-category.usecase";
 import { GetCategoryUseCase } from "@core/category/application/get-category/get-category.usecase";
@@ -31,7 +31,7 @@ export class CategoriesController {
   async create(@Body() createCategoryDto: CreateCategoryInput) {
     const output = await this.createUseCase.execute(createCategoryDto);
 
-    return new CategoryPresenter(output);
+    return CategoriesController.serialize(output);
   }
 
   @Get()
@@ -48,5 +48,9 @@ export class CategoriesController {
 
   @Delete(":id")
   remove(@Param("id") id: string) {
+  }
+
+  static serialize(outpu: CreateCategoryOutput){
+    return new CategoryPresenter(outpu);
   }
 }
