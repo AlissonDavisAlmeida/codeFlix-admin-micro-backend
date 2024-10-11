@@ -7,6 +7,7 @@ import { GetCategoryUseCase } from "@core/category/application/get-category/get-
 import { SearchCategoryUseCase } from "@core/category/application/search-category/search-category.usecase";
 import { CreateCategoryInput } from "@core/category/application/create-category/create-category-input";
 import { CategoryPresenter } from "./categories.presenter";
+import { Category } from "@core/category/domain/entities/category.entity";
 
 @Controller("categories")
 export class CategoriesController {
@@ -42,7 +43,7 @@ export class CategoriesController {
   async findOne(@Param("id", new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string) {
     const output = await this.getUseCase.execute({ id });
 
-    return output;
+    return CategoriesController.serialize(output.category);
   }
 
   @Patch(":id")
@@ -65,7 +66,7 @@ export class CategoriesController {
     await this.deleteUseCase.execute({ id });
   }
 
-  static serialize(output: CreateCategoryOutput) {
+  static serialize(output: CreateCategoryOutput | Category) {
     return new CategoryPresenter(output);
   }
 }
