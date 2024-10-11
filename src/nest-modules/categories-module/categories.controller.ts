@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, ParseUUIDPipe } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, ParseUUIDPipe, HttpCode } from "@nestjs/common";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
 import { CreateCategoryOutput, CreateCategoryUseCase } from "@core/category/application/create-category/create-category.usecase";
 import { UpdateCategoryUseCase } from "@core/category/application/update-category/update-category.usecase";
@@ -56,8 +56,9 @@ export class CategoriesController {
     return CategoriesController.serialize(output);
   }
 
+  @HttpCode(204)
   @Delete(":id")
-  async remove(@Param("id") id: string) {
+  async remove(@Param("id", new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string) {
     await this.deleteUseCase.execute({ id });
   }
 
