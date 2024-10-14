@@ -1,6 +1,8 @@
 import { CreateCategoryOutput } from "@core/category/application/create-category/create-category.usecase";
-import { Category } from "@core/category/domain/entities/category.entity";
+import { SearchCategoryUseCaseOutput } from "@core/category/application/search-category/search-category.usecase";
+import { Category, CategoryConstructorProps } from "@core/category/domain/entities/category.entity";
 import { Transform } from "class-transformer";
+import { CollectionPresenter } from "../shared/collection.presenter";
 
 export class CategoryPresenter {
     id: string;
@@ -26,4 +28,19 @@ export class CategoryPresenter {
             this.created_at = output.created_at;
         }
     }
+}
+
+
+export class CategoryCollectionPresenter extends CollectionPresenter {
+    data: CategoryPresenter[];
+
+    constructor(output: SearchCategoryUseCaseOutput) {
+        const { items, ...paginationProps } = output;
+        super(paginationProps);
+        this.data = items.map((category) => new CategoryPresenter(mapperToCategory(category)));
+    }
+}
+
+function mapperToCategory(output: CategoryConstructorProps) {
+    return new Category(output);
 }

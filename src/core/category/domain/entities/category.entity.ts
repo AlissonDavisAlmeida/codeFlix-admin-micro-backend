@@ -1,5 +1,4 @@
 import { Notification } from "../../../shared/domain/validators/notification";
-import { EntityValidationError } from "../../../shared/domain/validators/validation.error";
 import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
 import { ValueObject } from "../../../shared/domain/value-objects/value-object";
 import { Entity } from "../../../shared/entity";

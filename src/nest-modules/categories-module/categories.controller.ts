@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, ParseUUIDPipe, HttpCode } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, ParseUUIDPipe, HttpCode, Query } from "@nestjs/common";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
 import { CreateCategoryOutput, CreateCategoryUseCase } from "@core/category/application/create-category/create-category.usecase";
 import { UpdateCategoryUseCase } from "@core/category/application/update-category/update-category.usecase";
@@ -6,8 +6,9 @@ import { DeleteCategoryUseCase } from "@core/category/application/delete-categor
 import { GetCategoryUseCase } from "@core/category/application/get-category/get-category.usecase";
 import { SearchCategoryUseCase } from "@core/category/application/search-category/search-category.usecase";
 import { CreateCategoryInput } from "@core/category/application/create-category/create-category-input";
-import { CategoryPresenter } from "./categories.presenter";
+import { CategoryCollectionPresenter, CategoryPresenter } from "./categories.presenter";
 import { Category } from "@core/category/domain/entities/category.entity";
+import { SearchCategoryDTO } from "./dto/search-category.dto";
 
 @Controller("categories")
 export class CategoriesController {
@@ -36,7 +37,10 @@ export class CategoriesController {
   }
 
   @Get()
-  findAll() {
+  async search(@Query() search: SearchCategoryDTO) {
+    const output = await this.searchUseCase.execute(search);
+
+    return new CategoryCollectionPresenter(output);
   }
 
   @Get(":id")
